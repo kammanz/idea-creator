@@ -28,6 +28,13 @@
   color: #61dafb;
 }
 
+.list {
+}
+
+.list-item {
+  background: lightgray;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
