@@ -1,9 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import Item from './components/Item';
+import IdeaList from './components/IdeaList';
 
 function App() {
-  return <Item />;
+  return <IdeaList />;
 }
 
 export default App;
