@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import styles from './Item.module.css';
+import styles from './IdeaList.module.css';
 
 const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
