@@ -5,29 +5,48 @@ import styles from './IdeaList.module.css';
 const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
   const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
   const deleteIdea = (e, id) => {
     e.preventDefault();
     setIdeas((currentIdeas) => currentIdeas.filter((idea) => idea.id !== id));
   };
 
-  const createIdea = (e, title) => {
+  const createIdea = (e) => {
     e.preventDefault();
     setIdeas([
       ...ideas,
-      { title: title, id: Math.floor(Math.random() * 1000) },
+      { id: Math.floor(Math.random() * 1000), title, description },
     ]);
     setTitle('');
+    setDescription('');
   };
 
   const handleChange = (e) => {
-    setTitle(e.target.value);
+    console.log('e: ', e.target.name);
+    const inputName = e.target.name;
+    if (inputName === 'title') {
+      setTitle(e.target.value);
+    } else {
+      setDescription(e.target.value);
+    }
   };
 
   return (
     <div>
-      <form className={styles.tile} onSubmit={(e) => createIdea(e, title)}>
-        <input value={title} onChange={(e) => handleChange(e)} />
+      <form className={styles.tile} onSubmit={(e) => createIdea(e)}>
+        <input
+          placeholder="Title"
+          name="title"
+          value={title}
+          onChange={(e) => handleChange(e)}
+        />
+        <input
+          placeholder="Description"
+          name="description"
+          value={description}
+          onChange={(e) => handleChange(e)}
+        />
         <button type="submit" disabled={!title}>
           Create
         </button>
@@ -49,6 +68,19 @@ const IdeaList = () => {
                         ideas.map((currentIdea) =>
                           currentIdea.id === idea.id
                             ? { ...currentIdea, title }
+                            : currentIdea
+                        )
+                      );
+                    }}
+                  />
+                  <input
+                    value={idea.description}
+                    onChange={(e) => {
+                      const description = e.target.value;
+                      setIdeas(
+                        ideas.map((currentIdea) =>
+                          currentIdea.id === idea.id
+                            ? { ...currentIdea, description }
                             : currentIdea
                         )
                       );
