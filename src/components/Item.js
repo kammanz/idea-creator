@@ -11,18 +11,6 @@ const Item = () => {
 
   const updateIdea = (e, id, title) => {
     e.preventDefault();
-    // console.log('here, id: ', id);
-    // console.log('update title fired.');
-
-    // const idea = items.find((item) => item.id === id);
-
-    // const updatedArray = items.map((item) => {
-    //   console.log('here');
-    //   if (item.id === id) {
-    //     item = { ...item, title: item.title };
-    //   }
-    // });
-
     const updatedArray = items.map((i) => i);
 
     console.log('updatedArray', updatedArray);
