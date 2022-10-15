@@ -1,15 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import Tile from './components/tile';
+import Item from './components/Item';
 
 function App() {
-  return (
-    <div
-      className="App"
-      style={{ backgroundColor: 'lightgrey', height: '80vh' }}>
-      <Tile />
-    </div>
-  );
+  return <Item />;
 }
 
 export default App;
