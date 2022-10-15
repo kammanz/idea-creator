@@ -47,7 +47,7 @@ const IdeaList = () => {
           value={description}
           onChange={(e) => handleChange(e)}
         />
-        <button type="submit" disabled={!title}>
+        <button type="submit" disabled={!title || !description}>
           Create
         </button>
       </form>
