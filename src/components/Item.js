@@ -3,25 +3,22 @@ import { useState } from 'react';
 import styles from './Item.module.css';
 
 const Item = () => {
-  const [items, setItems] = useState([
+  const [ideas, setIdeas] = useState([
     { title: 'title1', id: 136 },
     { title: 'title2', id: 223 },
   ]);
   const [title, setTitle] = useState('');
 
-  const updateIdea = (e, id, title) => {
+  const deleteIdea = (e, id) => {
     e.preventDefault();
-    const updatedArray = items.map((i) => i);
-
-    console.log('updatedArray', updatedArray);
-
-    setItems(updatedArray);
+    const currentIdea = ideas.find((idea) => idea.id === id);
+    setIdeas((currentIdeas) => currentIdeas.filter((idea) => idea.id !== id));
   };
 
   const createIdea = (e, title) => {
     e.preventDefault();
-    setItems([
-      ...items,
+    setIdeas([
+      ...ideas,
       { title: title, id: Math.floor(Math.random() * 1000) },
     ]);
     setTitle('');
@@ -37,26 +34,26 @@ const Item = () => {
         <input value={title} onChange={(e) => handleChange(e)} />
         <button type="submit">Create</button>
       </form>
-      {items
-        ? items.map((item) => {
+      {ideas
+        ? ideas.map((item) => {
             return (
               <div key={item.id}>
                 <form
-                  onSubmit={(e) => updateIdea(e, item.id, item.title)}
+                  onSubmit={(e) => deleteIdea(e, item.id)}
                   className={styles.tile}>
                   <label>Id: {item.id}</label>
                   <input
                     value={item.title}
                     onChange={(e) => {
                       const title = e.target.value;
-                      setItems(
-                        items.map((itemy) =>
+                      setIdeas(
+                        ideas.map((itemy) =>
                           itemy.id === item.id ? { ...itemy, title } : itemy
                         )
                       );
                     }}
                   />
-                  <button type="submit">Update</button>
+                  <button type="submit">Delete</button>
                 </form>
               </div>
             );
