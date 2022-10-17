@@ -134,12 +134,12 @@ const IdeaList = () => {
           value={title}
           onChange={(e) => handleChange(e)}
         />
-        <input
+        <textarea
+          maxLength="140"
           placeholder="Description"
           name="description"
           value={description}
-          onChange={(e) => handleChange(e)}
-        />
+          onChange={(e) => handleChange(e)}></textarea>
         <button type="submit" disabled={!title || !description}>
           Create
         </button>
@@ -178,7 +178,10 @@ const IdeaList = () => {
                       );
                     }}
                   />
-                  <input
+                  <textarea
+                    placeholder="Description"
+                    maxLength="140"
+                    name="description"
                     value={idea.description}
                     onChange={(e) => {
                       const description = e.target.value;
@@ -189,8 +192,7 @@ const IdeaList = () => {
                             : currentIdea
                         )
                       );
-                    }}
-                  />
+                    }}></textarea>
                   <button name="update" type="submit">
                     Update
                   </button>
