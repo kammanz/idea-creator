@@ -76,6 +76,8 @@ const IdeaList = () => {
     e.preventDefault();
     console.log('e', e.target.value);
     const submitType = e.target.value;
+
+    setSelectValue(e.target.value);
     // console.log('submitType: ', submitType);
 
     if (submitType === 'date-new') {
@@ -147,8 +149,10 @@ const IdeaList = () => {
       </form>
       <form>
         <label>Sort By:</label>
-        <select value={selectValue} onChange={handleSelectChange}>
-          <option value=""></option>
+        <select
+          value={selectValue}
+          onChange={handleSelectChange}
+          disabled={ideas.length > 1 ? false : true}>
           <option value="date-new">Newest</option>
           <option value="date-old">Oldest</option>
           <option value="alphabet">Alphabetically</option>
