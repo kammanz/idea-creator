@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, createRef } from 'react';
 import styles from './IdeaList.module.css';
 
 const options = {
@@ -14,6 +14,8 @@ const IdeaList = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectValue, setSelectValue] = useState('');
+
+  const ref = createRef();
 
   const handleListSubmit = (e, id) => {
     e.preventDefault();
@@ -60,6 +62,8 @@ const IdeaList = () => {
     ]);
     setTitle('');
     setDescription('');
+    console.log('ref', ref);
+    ref.current.focus();
   };
 
   const handleChange = (e) => {
@@ -133,6 +137,8 @@ const IdeaList = () => {
           name="title"
           value={title}
           onChange={(e) => handleChange(e)}
+          ref={ref}
+          autoFocus
         />
         <textarea
           maxLength="140"
