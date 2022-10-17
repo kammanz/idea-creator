@@ -21,10 +21,19 @@ const IdeaList = () => {
       setIdeas((currentIdeas) => currentIdeas.filter((idea) => idea.id !== id));
     } else if (submitType === 'update') {
       let date = new Date();
-      date = date.getTime();
+      let currentDate = date.getTime();
+      let currentTime = date.toLocaleString();
       setIdeas((currentIdeas) =>
         currentIdeas.map((idea) =>
-          idea.id === id ? { ...idea, date: date } : idea
+          idea.id === id
+            ? {
+                ...idea,
+                date: {
+                  currentDate: currentDate,
+                  time: currentTime,
+                },
+              }
+            : idea
         )
       );
     }
@@ -32,8 +41,9 @@ const IdeaList = () => {
 
   const handleTileSubmit = (e) => {
     e.preventDefault();
-    let currentDate = new Date();
-    currentDate = currentDate.getTime();
+    let date = new Date();
+    let currentDate = date.getTime();
+    let currentTime = date.toLocaleString();
 
     setIdeas([
       ...ideas,
@@ -41,7 +51,10 @@ const IdeaList = () => {
         id: Math.floor(Math.random() * 1000),
         title,
         description,
-        date: currentDate,
+        date: {
+          currentDate: currentDate,
+          time: currentTime,
+        },
       },
     ]);
     setTitle('');
@@ -87,7 +100,7 @@ const IdeaList = () => {
                   onSubmit={(e) => handleListSubmit(e, idea.id)}
                   className={styles.tile}>
                   <label>Id: {idea.id}</label>
-                  <p>Idea created on: {idea.date}</p>
+                  <p>Idea created on: {idea.date.time}</p>
                   <input
                     value={idea.title}
                     onChange={(e) => {
