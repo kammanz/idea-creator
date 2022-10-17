@@ -62,7 +62,6 @@ const IdeaList = () => {
     ]);
     setTitle('');
     setDescription('');
-    console.log('ref', ref);
     ref.current.focus();
   };
 
