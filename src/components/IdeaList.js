@@ -63,7 +63,6 @@ const IdeaList = () => {
   };
 
   const handleChange = (e) => {
-    console.log('e: ', e.target.name);
     const inputName = e.target.name;
     if (inputName === 'title') {
       setTitle(e.target.value);
@@ -74,11 +73,9 @@ const IdeaList = () => {
 
   const handleSelectChange = (e) => {
     e.preventDefault();
-    console.log('e', e.target.value);
     const submitType = e.target.value;
 
     setSelectValue(e.target.value);
-    // console.log('submitType: ', submitType);
 
     if (submitType === 'date-new') {
       const customSort = (a, b) => {
