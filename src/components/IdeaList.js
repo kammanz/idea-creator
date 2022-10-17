@@ -14,14 +14,26 @@ const IdeaList = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-  const deleteIdea = (e, id) => {
+  const handleListSubmit = (e, id) => {
     e.preventDefault();
-    setIdeas((currentIdeas) => currentIdeas.filter((idea) => idea.id !== id));
+    const submitType = e.nativeEvent.submitter.name;
+    if (submitType === 'delete') {
+      setIdeas((currentIdeas) => currentIdeas.filter((idea) => idea.id !== id));
+    } else if (submitType === 'update') {
+      let date = new Date();
+      date = date.getTime();
+      setIdeas((currentIdeas) =>
+        currentIdeas.map((idea) =>
+          idea.id === id ? { ...idea, date: date } : idea
+        )
+      );
+    }
   };
 
-  const createIdea = (e) => {
+  const handleTileSubmit = (e) => {
     e.preventDefault();
-    const today = new Date();
+    let currentDate = new Date();
+    currentDate = currentDate.getTime();
 
     setIdeas([
       ...ideas,
@@ -29,7 +41,7 @@ const IdeaList = () => {
         id: Math.floor(Math.random() * 1000),
         title,
         description,
-        date: today.toLocaleDateString('en-US', options),
+        date: currentDate,
       },
     ]);
     setTitle('');
@@ -48,7 +60,7 @@ const IdeaList = () => {
 
   return (
     <div>
-      <form className={styles.tile} onSubmit={(e) => createIdea(e)}>
+      <form className={styles.tile} onSubmit={(e) => handleTileSubmit(e)}>
         <input
           placeholder="Title"
           name="title"
@@ -67,11 +79,12 @@ const IdeaList = () => {
       </form>
       {ideas
         ? ideas.map((idea) => {
+            console.log('in render: ', idea);
             return (
               <div key={idea.id}>
                 <form
                   placeholder="Title"
-                  onSubmit={(e) => deleteIdea(e, idea.id)}
+                  onSubmit={(e) => handleListSubmit(e, idea.id)}
                   className={styles.tile}>
                   <label>Id: {idea.id}</label>
                   <p>Idea created on: {idea.date}</p>
@@ -101,7 +114,12 @@ const IdeaList = () => {
                       );
                     }}
                   />
-                  <button type="submit">Delete</button>
+                  <button name="update" type="submit">
+                    Update
+                  </button>
+                  <button name="delete" type="submit">
+                    Delete
+                  </button>
                 </form>
               </div>
             );
