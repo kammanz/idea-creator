@@ -2,6 +2,13 @@ import React from 'react';
 import { useState } from 'react';
 import styles from './IdeaList.module.css';
 
+const options = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+
 const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
   const [title, setTitle] = useState('');
@@ -14,9 +21,16 @@ const IdeaList = () => {
 
   const createIdea = (e) => {
     e.preventDefault();
+    const today = new Date();
+
     setIdeas([
       ...ideas,
-      { id: Math.floor(Math.random() * 1000), title, description },
+      {
+        id: Math.floor(Math.random() * 1000),
+        title,
+        description,
+        date: today.toLocaleDateString('en-US', options),
+      },
     ]);
     setTitle('');
     setDescription('');
@@ -60,6 +74,7 @@ const IdeaList = () => {
                   onSubmit={(e) => deleteIdea(e, idea.id)}
                   className={styles.tile}>
                   <label>Id: {idea.id}</label>
+                  <p>Idea created on: {idea.date}</p>
                   <input
                     value={idea.title}
                     onChange={(e) => {
