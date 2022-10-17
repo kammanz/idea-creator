@@ -13,6 +13,7 @@ const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [selectValue, setSelectValue] = useState('');
 
   const handleListSubmit = (e, id) => {
     e.preventDefault();
@@ -71,6 +72,60 @@ const IdeaList = () => {
     }
   };
 
+  const handleSelectChange = (e) => {
+    e.preventDefault();
+    console.log('e', e.target.value);
+    const submitType = e.target.value;
+    // console.log('submitType: ', submitType);
+
+    if (submitType === 'date-new') {
+      const customSort = (a, b) => {
+        const dateA = a.date.currentDate;
+        const dateB = b.date.currentDate;
+        if (dateA < dateB) {
+          return 1;
+        } else if (dateA > dateB) {
+          return -1;
+        } else {
+          return 0;
+        }
+      };
+
+      const sortedArray = ideas.sort(customSort);
+      setIdeas((sortedArray) => sortedArray.map((item) => item));
+    } else if (submitType === 'date-old') {
+      const customSort = (a, b) => {
+        const dateA = a.date.currentDate;
+        const dateB = b.date.currentDate;
+        if (dateA > dateB) {
+          return 1;
+        } else if (dateA < dateB) {
+          return -1;
+        } else {
+          return 0;
+        }
+      };
+
+      const sortedArray = ideas.sort(customSort);
+      setIdeas((sortedArray) => sortedArray.map((item) => item));
+    } else if (submitType === 'alphabet') {
+      const customSort = (a, b) => {
+        const dateA = a.title;
+        const dateB = b.title;
+        if (dateA > dateB) {
+          return 1;
+        } else if (dateA < dateB) {
+          return -1;
+        } else {
+          return 0;
+        }
+      };
+
+      const sortedArray = ideas.sort(customSort);
+      setIdeas((sortedArray) => sortedArray.map((item) => item));
+    }
+  };
+
   return (
     <div>
       <form className={styles.tile} onSubmit={(e) => handleTileSubmit(e)}>
@@ -90,9 +145,17 @@ const IdeaList = () => {
           Create
         </button>
       </form>
+      <form>
+        <label>Sort By:</label>
+        <select value={selectValue} onChange={handleSelectChange}>
+          <option value=""></option>
+          <option value="date-new">Newest</option>
+          <option value="date-old">Oldest</option>
+          <option value="alphabet">Alphabetically</option>
+        </select>
+      </form>
       {ideas
         ? ideas.map((idea) => {
-            console.log('in render: ', idea);
             return (
               <div key={idea.id}>
                 <form
@@ -100,7 +163,7 @@ const IdeaList = () => {
                   onSubmit={(e) => handleListSubmit(e, idea.id)}
                   className={styles.tile}>
                   <label>Id: {idea.id}</label>
-                  <p>Idea created on: {idea.date.time}</p>
+                  <p>Idea created/last updated: {idea.date.time}</p>
                   <input
                     value={idea.title}
                     onChange={(e) => {
