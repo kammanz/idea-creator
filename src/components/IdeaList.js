@@ -2,6 +2,8 @@ import React from 'react';
 import { useState, createRef } from 'react';
 import styles from './IdeaList.module.css';
 
+import Card from './Card';
+
 const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
   const [title, setTitle] = useState('');
@@ -132,16 +134,16 @@ const IdeaList = () => {
           placeholder="Title"
           name="title"
           value={title}
-          onChange={(e) => handleChange(e)}
+          onChange={handleChange}
           ref={ref}
           autoFocus
         />
         <textarea
-          maxLength="140"
           placeholder="Description"
+          maxLength="140"
           name="description"
           value={description}
-          onChange={(e) => handleChange(e)}></textarea>
+          onChange={handleChange}></textarea>
         <button type="submit" disabled={!title || !description}>
           Create
         </button>
@@ -162,53 +164,11 @@ const IdeaList = () => {
         ? ideas.map((idea) => {
             return (
               <div key={idea.id}>
-                <form
-                  onSubmit={(e) => handleListSubmit(e, idea.id)}
-                  className={styles.tile}>
-                  <input
-                    placeholder="Title"
-                    value={idea.title}
-                    onChange={(e) => {
-                      const title = e.target.value;
-                      setIsUpdatedDisabled(false);
-                      setIdeas(
-                        ideas.map((currentIdea) =>
-                          currentIdea.id === idea.id
-                            ? { ...currentIdea, title }
-                            : currentIdea
-                        )
-                      );
-                    }}
-                  />
-                  <textarea
-                    placeholder="Description"
-                    maxLength="140"
-                    name="description"
-                    value={idea.description}
-                    onChange={(e) => {
-                      const description = e.target.value;
-                      setIsUpdatedDisabled(false);
-                      setIdeas(
-                        ideas.map((currentIdea) =>
-                          currentIdea.id === idea.id
-                            ? { ...currentIdea, description }
-                            : currentIdea
-                        )
-                      );
-                    }}></textarea>
-                  <div className="buttonContainer">
-                    <button
-                      name="update"
-                      type="submit"
-                      disabled={isUpdatedDisabled}>
-                      Update
-                    </button>
-                    <button name="delete" type="submit">
-                      Delete
-                    </button>
-                  </div>
-                  <p>Created/Updated: {idea.date.time}</p>
-                </form>
+                <Card
+                  typeOfCard="list"
+                  idea={idea}
+                  handleSubmit={handleListSubmit}
+                />
               </div>
             );
           })
