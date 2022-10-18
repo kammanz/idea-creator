@@ -2,18 +2,12 @@ import React from 'react';
 import { useState, createRef } from 'react';
 import styles from './IdeaList.module.css';
 
-const options = {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-};
-
 const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectValue, setSelectValue] = useState('');
+  const [isUpdatedDisabled, setIsUpdatedDisabled] = useState(true);
 
   const ref = createRef();
 
@@ -40,6 +34,8 @@ const IdeaList = () => {
         )
       );
     }
+
+    setIsUpdatedDisabled(true);
   };
 
   const handleTileSubmit = (e) => {
@@ -174,6 +170,7 @@ const IdeaList = () => {
                     value={idea.title}
                     onChange={(e) => {
                       const title = e.target.value;
+                      setIsUpdatedDisabled(false);
                       setIdeas(
                         ideas.map((currentIdea) =>
                           currentIdea.id === idea.id
@@ -190,6 +187,7 @@ const IdeaList = () => {
                     value={idea.description}
                     onChange={(e) => {
                       const description = e.target.value;
+                      setIsUpdatedDisabled(false);
                       setIdeas(
                         ideas.map((currentIdea) =>
                           currentIdea.id === idea.id
@@ -199,7 +197,10 @@ const IdeaList = () => {
                       );
                     }}></textarea>
                   <div className="buttonContainer">
-                    <button name="update" type="submit">
+                    <button
+                      name="update"
+                      type="submit"
+                      disabled={isUpdatedDisabled}>
                       Update
                     </button>
                     <button name="delete" type="submit">
