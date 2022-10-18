@@ -131,6 +131,7 @@ const IdeaList = () => {
   return (
     <div>
       <form className={styles.tile} onSubmit={(e) => handleTileSubmit(e)}>
+        <h4>Create an Idea</h4>
         <input
           placeholder="Title"
           name="title"
@@ -149,6 +150,7 @@ const IdeaList = () => {
           Create
         </button>
       </form>
+      <h3>List of Ideas</h3>
       <form>
         <label>Sort By:</label>
         <select
@@ -165,12 +167,10 @@ const IdeaList = () => {
             return (
               <div key={idea.id}>
                 <form
-                  placeholder="Title"
                   onSubmit={(e) => handleListSubmit(e, idea.id)}
                   className={styles.tile}>
-                  <label>Id: {idea.id}</label>
-                  <p>Idea created/last updated: {idea.date.time}</p>
                   <input
+                    placeholder="Title"
                     value={idea.title}
                     onChange={(e) => {
                       const title = e.target.value;
@@ -198,12 +198,15 @@ const IdeaList = () => {
                         )
                       );
                     }}></textarea>
-                  <button name="update" type="submit">
-                    Update
-                  </button>
-                  <button name="delete" type="submit">
-                    Delete
-                  </button>
+                  <div className="buttonContainer">
+                    <button name="update" type="submit">
+                      Update
+                    </button>
+                    <button name="delete" type="submit">
+                      Delete
+                    </button>
+                  </div>
+                  <p>Created/Updated: {idea.date.time}</p>
                 </form>
               </div>
             );
