@@ -41,6 +41,7 @@ const IdeaList = () => {
   };
 
   const handleTileSubmit = (e) => {
+    console.log('handleTileSubmit ran');
     e.preventDefault();
     let date = new Date();
     let currentDate = date.getTime();
@@ -64,7 +65,9 @@ const IdeaList = () => {
   };
 
   const handleChange = (e) => {
+    console.log('handle change ran');
     const inputName = e.target.name;
+    console.log('inputName: ', inputName);
     if (inputName === 'title') {
       setTitle(e.target.value);
     } else {
@@ -126,28 +129,39 @@ const IdeaList = () => {
     }
   };
 
+  const handleListChange = (e, id) => {
+    console.log('list, on change ran');
+    console.log('e: ', e);
+    let name = e.target.name;
+    if (name === 'title') {
+      const title = e.target.value;
+      setIsUpdatedDisabled(false);
+      setIdeas(
+        ideas.map((currentIdea) =>
+          currentIdea.id === id ? { ...currentIdea, title } : currentIdea
+        )
+      );
+    } else if (name === 'description') {
+      const description = e.target.value;
+      setIsUpdatedDisabled(false);
+      setIdeas(
+        ideas.map((currentIdea) =>
+          currentIdea.id === id ? { ...currentIdea, description } : currentIdea
+        )
+      );
+    }
+  };
+
   return (
     <div>
-      <form className={styles.tile} onSubmit={(e) => handleTileSubmit(e)}>
-        <h4>Create an Idea</h4>
-        <input
-          placeholder="Title"
-          name="title"
-          value={title}
-          onChange={handleChange}
-          ref={ref}
-          autoFocus
-        />
-        <textarea
-          placeholder="Description"
-          maxLength="140"
-          name="description"
-          value={description}
-          onChange={handleChange}></textarea>
-        <button type="submit" disabled={!title || !description}>
-          Create
-        </button>
-      </form>
+      <Card
+        type="card"
+        // idea={idea}
+        handleSubmit={handleListSubmit}
+        handleChange={handleChange}
+        handleTileSubmit={handleTileSubmit}
+        reffy={ref}
+      />
       <h3>List of Ideas</h3>
       <form>
         <label>Sort By:</label>
@@ -168,6 +182,12 @@ const IdeaList = () => {
                   typeOfCard="list"
                   idea={idea}
                   handleSubmit={handleListSubmit}
+                  handleChange={handleChange}
+                  handleTileSubmit={handleTileSubmit}
+                  isUpdatedDisabled={isUpdatedDisabled}
+                  setIsUpdatedDisabled={setIsUpdatedDisabled}
+                  setIdeas={setIdeas}
+                  handleListChange={handleListChange}
                 />
               </div>
             );

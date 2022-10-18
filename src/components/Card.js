@@ -13,62 +13,60 @@ const Card = ({
   isUpdatedDisabled,
   title,
   description,
+  reffy,
+  handleListChange,
 }) => {
   console.log('list type, should see list: ', typeOfCard);
 
   return (
-    <div key={idea.id}>
+    <div key={typeOfCard === 'list' ? idea.id : null}>
       <form
         onSubmit={
           typeOfCard === 'list'
             ? (e) => handleListSubmit(e, idea.id)
-            : (e) => handleTileSubmit(e)
+            : handleTileSubmit
         }
         className={styles.tile}>
         <input
+          name="title"
           placeholder="Title"
           value={typeOfCard === 'list' ? idea.title : title}
           onChange={
             typeOfCard === 'list'
-              ? (e) => {
-                  const title = e.target.value;
-                  setIsUpdatedDisabled(false);
-                  setIdeas(
-                    ideas.map((currentIdea) =>
-                      currentIdea.id === idea.id
-                        ? { ...currentIdea, title }
-                        : currentIdea
-                    )
-                  );
-                }
-              : handleChange
+              ? (e) => handleListChange(e, idea.id)
+              : // ? (e) => {
+                //     console.log('list, on change ran');
+                //     const title = e.target.value;
+                //     setIsUpdatedDisabled(false);
+                //     setIdeas(
+                //       ideas.map((currentIdea) =>
+                //         currentIdea.id === idea.id
+                //           ? { ...currentIdea, title }
+                //           : currentIdea
+                //       )
+                //     );
+                //   }
+                handleChange
           }
+          ref={typeOfCard === 'list' ? null : reffy}
         />
         <textarea
           placeholder="Description"
           maxLength="140"
           name="description"
           value={typeOfCard === 'list' ? idea.description : description}
-          onChange={(e) => {
-            const description = e.target.value;
-            setIsUpdatedDisabled(false);
-            setIdeas(
-              ideas.map((currentIdea) =>
-                currentIdea.id === idea.id
-                  ? { ...currentIdea, description }
-                  : currentIdea
-              )
-            );
-          }}></textarea>
+          onChange={
+            typeOfCard === 'list'
+              ? (e) => handleListChange(e, idea.id)
+              : handleChange
+          }></textarea>
         <div className="buttonContainer">
           {typeOfCard === 'list' ? (
             <button name="update" type="submit" disabled={isUpdatedDisabled}>
               Update
             </button>
           ) : (
-            <button type="submit" disabled={!title || !description}>
-              Create
-            </button>
+            <button type="submit">Create</button>
           )}
           {typeOfCard === 'list' ? (
             <button name="delete" type="submit">
