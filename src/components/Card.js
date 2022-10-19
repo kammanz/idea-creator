@@ -3,22 +3,22 @@ import styles from './Card.module.css';
 
 const Card = ({
   typeOfCard,
-  idea,
-  handleListSubmit,
-  handleTileChange,
-  handleTileSubmit,
-  isUpdatedDisabled,
   title,
   description,
-  theRef,
+  handleTileChange,
+  handleTileSubmit,
   handleListChange,
+  handleListSubmit,
+  isUpdatedDisabled,
+  theRef,
+  idea,
 }) => {
   return (
     <div key={typeOfCard === 'list' ? idea.id : null}>
       <form
         onSubmit={
           typeOfCard === 'list'
-            ? (e) => handleListSubmit(e, idea.id, console.log('sub ran'))
+            ? (e) => handleListSubmit(e, idea.id)
             : handleTileSubmit
         }
         className={styles.tile}>
@@ -49,7 +49,11 @@ const Card = ({
               Update
             </button>
           ) : (
-            <button type="submit">Create</button>
+            <button
+              type="submit"
+              disabled={title && description ? false : true}>
+              Create
+            </button>
           )}
           {typeOfCard === 'list' ? (
             <button name="delete" type="submit">

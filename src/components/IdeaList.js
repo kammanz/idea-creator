@@ -10,6 +10,7 @@ const IdeaList = () => {
   const [description, setDescription] = useState('');
   const [selectValue, setSelectValue] = useState('');
   const [isUpdatedDisabled, setIsUpdatedDisabled] = useState(true);
+  const [isCreateDisabled, setIsCreateDisabled] = useState(true);
 
   const ref = createRef();
 
@@ -22,6 +23,8 @@ const IdeaList = () => {
     } else {
       setDescription(e.target.value);
     }
+
+    setIsCreateDisabled(false);
   };
 
   const handleTileSubmit = (e) => {
@@ -182,12 +185,12 @@ const IdeaList = () => {
               <div key={idea.id}>
                 <Card
                   typeOfCard="list"
-                  idea={idea}
+                  title={title}
+                  description={description}
                   handleListChange={handleListChange}
                   handleListSubmit={handleListSubmit}
                   isUpdatedDisabled={isUpdatedDisabled}
-                  title={title}
-                  description={description}
+                  idea={idea}
                 />
               </div>
             );
