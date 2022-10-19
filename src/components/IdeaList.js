@@ -9,8 +9,8 @@ const IdeaList = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectValue, setSelectValue] = useState('');
-  const [isUpdatedDisabled, setIsUpdatedDisabled] = useState(true);
-  const [isCreateDisabled, setIsCreateDisabled] = useState(true);
+  const [isUpdateDisabled, setIsUpdateDisabled] = useState(true);
+  const [selectedCard, setSelectedCard] = useState({});
 
   const ref = createRef();
 
@@ -23,8 +23,6 @@ const IdeaList = () => {
     } else {
       setDescription(e.target.value);
     }
-
-    setIsCreateDisabled(false);
   };
 
   const handleTileSubmit = (e) => {
@@ -33,8 +31,6 @@ const IdeaList = () => {
     let date = new Date();
     let currentDate = date.getTime();
     let currentTime = date.toLocaleString();
-
-    setTitle('');
 
     setIdeas([
       ...ideas,
@@ -48,28 +44,35 @@ const IdeaList = () => {
         },
       },
     ]);
+    setTitle('');
     setDescription('');
+    setIsUpdateDisabled(true);
     ref.current.focus();
   };
 
-  const handleListChange = (e, id) => {
+  const handleListChange = (e, idea) => {
     console.log('list, on change ran');
     console.log('e: ', e);
+    console.log('idea: ', idea);
     let name = e.target.name;
+
+    setSelectedCard(idea);
     if (name === 'title') {
       const title = e.target.value;
-      setIsUpdatedDisabled(false);
+      setIsUpdateDisabled(false);
       setIdeas(
         ideas.map((currentIdea) =>
-          currentIdea.id === id ? { ...currentIdea, title } : currentIdea
+          currentIdea.id === idea.id ? { ...currentIdea, title } : currentIdea
         )
       );
     } else if (name === 'description') {
       const description = e.target.value;
-      setIsUpdatedDisabled(false);
+      setIsUpdateDisabled(false);
       setIdeas(
         ideas.map((currentIdea) =>
-          currentIdea.id === id ? { ...currentIdea, description } : currentIdea
+          currentIdea.id === idea.id
+            ? { ...currentIdea, description }
+            : currentIdea
         )
       );
     }
@@ -99,8 +102,7 @@ const IdeaList = () => {
         )
       );
     }
-
-    setIsUpdatedDisabled(true);
+    setSelectedCard(null);
   };
 
   const handleSelectChange = (e) => {
@@ -122,8 +124,8 @@ const IdeaList = () => {
         }
       };
 
-      const sortedArray = ideas.sort(customSort);
-      setIdeas((sortedArray) => sortedArray.map((item) => item));
+      const sortedArray = [...ideas].sort(customSort);
+      setIdeas(sortedArray);
     } else if (submitType === 'date-old') {
       const customSort = (a, b) => {
         const dateA = a.date.currentDate;
@@ -137,8 +139,8 @@ const IdeaList = () => {
         }
       };
 
-      const sortedArray = ideas.sort(customSort);
-      setIdeas((sortedArray) => sortedArray.map((item) => item));
+      const sortedArray = [...ideas].sort(customSort);
+      setIdeas(sortedArray);
     } else if (submitType === 'alphabet') {
       const customSort = (a, b) => {
         const dateA = a.title;
@@ -152,9 +154,14 @@ const IdeaList = () => {
         }
       };
 
-      const sortedArray = ideas.sort(customSort);
-      setIdeas((sortedArray) => sortedArray.map((item) => item));
+      const sortedArray = [...ideas].sort(customSort);
+      setIdeas(sortedArray);
     }
+  };
+
+  const handleBlur = (e) => {
+    console.log('handle blur ran');
+    setTitle((prev) => prev);
   };
 
   return (
@@ -189,8 +196,10 @@ const IdeaList = () => {
                   description={description}
                   handleListChange={handleListChange}
                   handleListSubmit={handleListSubmit}
-                  isUpdatedDisabled={isUpdatedDisabled}
+                  handleBlur={handleBlur}
+                  isUpdateDisabled={isUpdateDisabled}
                   idea={idea}
+                  selectedCard={selectedCard}
                 />
               </div>
             );

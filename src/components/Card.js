@@ -9,10 +9,19 @@ const Card = ({
   handleTileSubmit,
   handleListChange,
   handleListSubmit,
-  isUpdatedDisabled,
+  handleBlur,
   theRef,
   idea,
+  selectedCard,
 }) => {
+  console.log('up top, idea: (should see object): ', idea);
+  console.log('selectedCard: ', selectedCard);
+  console.log(
+    'selectedCard === idea.id: ',
+    idea && selectedCard.id === idea.id
+  );
+  console.log('typeOfCard: ', typeOfCard);
+
   return (
     <div key={typeOfCard === 'list' ? idea.id : null}>
       <form
@@ -21,6 +30,7 @@ const Card = ({
             ? (e) => handleListSubmit(e, idea.id)
             : handleTileSubmit
         }
+        onBlur={handleBlur}
         className={styles.tile}>
         <input
           name="title"
@@ -28,7 +38,7 @@ const Card = ({
           value={typeOfCard === 'list' ? idea.title : title}
           onChange={
             typeOfCard === 'list'
-              ? (e) => handleListChange(e, idea.id)
+              ? (e) => handleListChange(e, idea, console.log('here', idea))
               : handleTileChange
           }
           ref={typeOfCard === 'list' ? null : theRef}
@@ -45,8 +55,11 @@ const Card = ({
           }></textarea>
         <div className="buttonContainer">
           {typeOfCard === 'list' ? (
-            <button name="update" type="submit" disabled={isUpdatedDisabled}>
-              Update
+            <button
+              name="update"
+              type="submit"
+              disabled={selectedCard.id === idea.id ? false : true}>
+              Save
             </button>
           ) : (
             <button
