@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, createRef } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import styles from './IdeaList.module.css';
 
 import Card from './Card';
@@ -13,7 +13,67 @@ const IdeaList = () => {
 
   const ref = createRef();
 
+  const handleTileChange = (e) => {
+    console.log('handle tile change ran');
+    const inputName = e.target.name;
+    console.log('inputName: ', inputName);
+    if (inputName === 'title') {
+      setTitle(e.target.value);
+    } else {
+      setDescription(e.target.value);
+    }
+  };
+
+  const handleTileSubmit = (e) => {
+    console.log('handle tile submit ran');
+    e.preventDefault();
+    let date = new Date();
+    let currentDate = date.getTime();
+    let currentTime = date.toLocaleString();
+
+    setTitle('');
+
+    setIdeas([
+      ...ideas,
+      {
+        id: Math.floor(Math.random() * 1000),
+        title,
+        description,
+        date: {
+          currentDate: currentDate,
+          time: currentTime,
+        },
+      },
+    ]);
+    setDescription('');
+    ref.current.focus();
+  };
+
+  const handleListChange = (e, id) => {
+    console.log('list, on change ran');
+    console.log('e: ', e);
+    let name = e.target.name;
+    if (name === 'title') {
+      const title = e.target.value;
+      setIsUpdatedDisabled(false);
+      setIdeas(
+        ideas.map((currentIdea) =>
+          currentIdea.id === id ? { ...currentIdea, title } : currentIdea
+        )
+      );
+    } else if (name === 'description') {
+      const description = e.target.value;
+      setIsUpdatedDisabled(false);
+      setIdeas(
+        ideas.map((currentIdea) =>
+          currentIdea.id === id ? { ...currentIdea, description } : currentIdea
+        )
+      );
+    }
+  };
+
   const handleListSubmit = (e, id) => {
+    console.log('handleListSubmit ran');
     e.preventDefault();
     const submitType = e.nativeEvent.submitter.name;
     if (submitType === 'delete') {
@@ -38,41 +98,6 @@ const IdeaList = () => {
     }
 
     setIsUpdatedDisabled(true);
-  };
-
-  const handleTileSubmit = (e) => {
-    console.log('handleTileSubmit ran');
-    e.preventDefault();
-    let date = new Date();
-    let currentDate = date.getTime();
-    let currentTime = date.toLocaleString();
-
-    setIdeas([
-      ...ideas,
-      {
-        id: Math.floor(Math.random() * 1000),
-        title,
-        description,
-        date: {
-          currentDate: currentDate,
-          time: currentTime,
-        },
-      },
-    ]);
-    setTitle('');
-    setDescription('');
-    ref.current.focus();
-  };
-
-  const handleChange = (e) => {
-    console.log('handle change ran');
-    const inputName = e.target.name;
-    console.log('inputName: ', inputName);
-    if (inputName === 'title') {
-      setTitle(e.target.value);
-    } else {
-      setDescription(e.target.value);
-    }
   };
 
   const handleSelectChange = (e) => {
@@ -129,38 +154,15 @@ const IdeaList = () => {
     }
   };
 
-  const handleListChange = (e, id) => {
-    console.log('list, on change ran');
-    console.log('e: ', e);
-    let name = e.target.name;
-    if (name === 'title') {
-      const title = e.target.value;
-      setIsUpdatedDisabled(false);
-      setIdeas(
-        ideas.map((currentIdea) =>
-          currentIdea.id === id ? { ...currentIdea, title } : currentIdea
-        )
-      );
-    } else if (name === 'description') {
-      const description = e.target.value;
-      setIsUpdatedDisabled(false);
-      setIdeas(
-        ideas.map((currentIdea) =>
-          currentIdea.id === id ? { ...currentIdea, description } : currentIdea
-        )
-      );
-    }
-  };
-
   return (
     <div>
       <Card
-        type="card"
-        // idea={idea}
-        handleSubmit={handleListSubmit}
-        handleChange={handleChange}
+        typeOfCard="card"
+        title={title}
+        description={description}
+        handleTileChange={handleTileChange}
         handleTileSubmit={handleTileSubmit}
-        reffy={ref}
+        theRef={ref}
       />
       <h3>List of Ideas</h3>
       <form>
@@ -181,13 +183,11 @@ const IdeaList = () => {
                 <Card
                   typeOfCard="list"
                   idea={idea}
-                  handleSubmit={handleListSubmit}
-                  handleChange={handleChange}
-                  handleTileSubmit={handleTileSubmit}
-                  isUpdatedDisabled={isUpdatedDisabled}
-                  setIsUpdatedDisabled={setIsUpdatedDisabled}
-                  setIdeas={setIdeas}
                   handleListChange={handleListChange}
+                  handleListSubmit={handleListSubmit}
+                  isUpdatedDisabled={isUpdatedDisabled}
+                  title={title}
+                  description={description}
                 />
               </div>
             );

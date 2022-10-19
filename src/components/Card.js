@@ -4,26 +4,21 @@ import styles from './Card.module.css';
 const Card = ({
   typeOfCard,
   idea,
-  ideas,
   handleListSubmit,
-  handleChange,
+  handleTileChange,
   handleTileSubmit,
-  setIsUpdatedDisabled,
-  setIdeas,
   isUpdatedDisabled,
   title,
   description,
-  reffy,
+  theRef,
   handleListChange,
 }) => {
-  console.log('list type, should see list: ', typeOfCard);
-
   return (
     <div key={typeOfCard === 'list' ? idea.id : null}>
       <form
         onSubmit={
           typeOfCard === 'list'
-            ? (e) => handleListSubmit(e, idea.id)
+            ? (e) => handleListSubmit(e, idea.id, console.log('sub ran'))
             : handleTileSubmit
         }
         className={styles.tile}>
@@ -34,21 +29,9 @@ const Card = ({
           onChange={
             typeOfCard === 'list'
               ? (e) => handleListChange(e, idea.id)
-              : // ? (e) => {
-                //     console.log('list, on change ran');
-                //     const title = e.target.value;
-                //     setIsUpdatedDisabled(false);
-                //     setIdeas(
-                //       ideas.map((currentIdea) =>
-                //         currentIdea.id === idea.id
-                //           ? { ...currentIdea, title }
-                //           : currentIdea
-                //       )
-                //     );
-                //   }
-                handleChange
+              : handleTileChange
           }
-          ref={typeOfCard === 'list' ? null : reffy}
+          ref={typeOfCard === 'list' ? null : theRef}
         />
         <textarea
           placeholder="Description"
@@ -58,7 +41,7 @@ const Card = ({
           onChange={
             typeOfCard === 'list'
               ? (e) => handleListChange(e, idea.id)
-              : handleChange
+              : handleTileChange
           }></textarea>
         <div className="buttonContainer">
           {typeOfCard === 'list' ? (
