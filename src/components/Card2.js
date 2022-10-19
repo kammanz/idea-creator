@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './Card.module.css';
 
-const Card = ({
+const Card2 = ({
   typeOfCard,
   title,
   description,
@@ -14,6 +14,7 @@ const Card = ({
   theRef,
   idea,
   selectedCard,
+  getStuff,
 }) => {
   const {
     register,
@@ -22,45 +23,35 @@ const Card = ({
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log('data: ', data);
+  // const onSubmit = (data) => {
+  //   console.log('data: ', data);
+  //   console.log('data.title: ', data.title);
+  //   return data && data.title;
+  // };
 
-  console.log('watch: ', watch('example'));
+  // console.log('onSubmit', onSubmit);
 
-  // console.log('up top, idea: (should see object): ', idea);
-  // console.log('selectedCard: ', selectedCard);
-  // console.log(
-  //   'selectedCard === idea.id: ',
-  //   idea && selectedCard.id === idea.id
-  // );
-  // console.log('typeOfCard: ', typeOfCard);
+  // getStuff(onSubmit());
+
+  console.log('watching input title: ', watch('title'));
+  console.log('watch input description: ', watch('description'));
 
   return (
     <div key={typeOfCard === 'list' ? idea.id : null}>
-      <form
-        onSubmit={
-          typeOfCard === 'list'
-            ? (e) => handleListSubmit(e, idea.id)
-            : handleSubmit(onSubmit)
-        }
-        onBlur={handleBlur}
-        className={styles.tile}>
+      <form onSubmit={handleSubmit(getStuff)} className={styles.tile}>
         <input
           name="title"
           placeholder="Title"
-          value={typeOfCard === 'list' ? idea.title : title}
+          defaultValue=""
           {...register('title')}
-          onChange={
-            typeOfCard === 'list'
-              ? (e) => handleListChange(e, idea, console.log('here', idea))
-              : handleTileChange
-          }
-          ref={typeOfCard === 'list' ? null : theRef}
         />
         <textarea
           placeholder="Description"
           maxLength="140"
           name="description"
-          value={typeOfCard === 'list' ? idea.description : description}
+          // value={typeOfCard === 'list' ? idea.description : description}
+          defaultValue={''}
+          {...register('description')}
           onChange={
             typeOfCard === 'list'
               ? (e) => handleListChange(e, idea.id)
@@ -75,9 +66,7 @@ const Card = ({
               Save
             </button>
           ) : (
-            <button
-              type="submit"
-              disabled={title && description ? false : true}>
+            <button type="submit" disabled={false}>
               Create
             </button>
           )}
@@ -95,4 +84,4 @@ const Card = ({
   );
 };
 
-export default Card;
+export default Card2;
