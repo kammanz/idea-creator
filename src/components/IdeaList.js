@@ -1,17 +1,85 @@
 import React from 'react';
-import { useState, createRef } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import styles from './IdeaList.module.css';
+
+import Card from './Card';
 
 const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectValue, setSelectValue] = useState('');
-  const [isUpdatedDisabled, setIsUpdatedDisabled] = useState(true);
+  const [isUpdateDisabled, setIsUpdateDisabled] = useState(true);
+  const [selectedCard, setSelectedCard] = useState({});
 
   const ref = createRef();
 
+  const handleTileChange = (e) => {
+    console.log('handle tile change ran');
+    const inputName = e.target.name;
+    console.log('inputName: ', inputName);
+    if (inputName === 'title') {
+      setTitle(e.target.value);
+    } else {
+      setDescription(e.target.value);
+    }
+  };
+
+  const handleTileSubmit = (e) => {
+    console.log('handle tile submit ran');
+    e.preventDefault();
+    let date = new Date();
+    let currentDate = date.getTime();
+    let currentTime = date.toLocaleString();
+
+    setIdeas([
+      ...ideas,
+      {
+        id: Math.floor(Math.random() * 1000),
+        title,
+        description,
+        date: {
+          currentDate: currentDate,
+          time: currentTime,
+        },
+      },
+    ]);
+    setTitle('');
+    setDescription('');
+    setIsUpdateDisabled(true);
+    ref.current.focus();
+  };
+
+  const handleListChange = (e, idea) => {
+    console.log('list, on change ran');
+    console.log('e: ', e);
+    console.log('idea: ', idea);
+    let name = e.target.name;
+
+    setSelectedCard(idea);
+    if (name === 'title') {
+      const title = e.target.value;
+      setIsUpdateDisabled(false);
+      setIdeas(
+        ideas.map((currentIdea) =>
+          currentIdea.id === idea.id ? { ...currentIdea, title } : currentIdea
+        )
+      );
+    } else if (name === 'description') {
+      const description = e.target.value;
+      setIsUpdateDisabled(false);
+      setIdeas(
+        ideas.map((currentIdea) =>
+          currentIdea.id === idea.id
+            ? { ...currentIdea, description }
+            : currentIdea
+        )
+      );
+    }
+  };
+
   const handleListSubmit = (e, id) => {
+    console.log('handleListSubmit ran');
     e.preventDefault();
     const submitType = e.nativeEvent.submitter.name;
     if (submitType === 'delete') {
@@ -34,40 +102,7 @@ const IdeaList = () => {
         )
       );
     }
-
-    setIsUpdatedDisabled(true);
-  };
-
-  const handleTileSubmit = (e) => {
-    e.preventDefault();
-    let date = new Date();
-    let currentDate = date.getTime();
-    let currentTime = date.toLocaleString();
-
-    setIdeas([
-      ...ideas,
-      {
-        id: Math.floor(Math.random() * 1000),
-        title,
-        description,
-        date: {
-          currentDate: currentDate,
-          time: currentTime,
-        },
-      },
-    ]);
-    setTitle('');
-    setDescription('');
-    ref.current.focus();
-  };
-
-  const handleChange = (e) => {
-    const inputName = e.target.name;
-    if (inputName === 'title') {
-      setTitle(e.target.value);
-    } else {
-      setDescription(e.target.value);
-    }
+    setSelectedCard(null);
   };
 
   const handleSelectChange = (e) => {
@@ -89,8 +124,8 @@ const IdeaList = () => {
         }
       };
 
-      const sortedArray = ideas.sort(customSort);
-      setIdeas((sortedArray) => sortedArray.map((item) => item));
+      const sortedArray = [...ideas].sort(customSort);
+      setIdeas(sortedArray);
     } else if (submitType === 'date-old') {
       const customSort = (a, b) => {
         const dateA = a.date.currentDate;
@@ -104,8 +139,8 @@ const IdeaList = () => {
         }
       };
 
-      const sortedArray = ideas.sort(customSort);
-      setIdeas((sortedArray) => sortedArray.map((item) => item));
+      const sortedArray = [...ideas].sort(customSort);
+      setIdeas(sortedArray);
     } else if (submitType === 'alphabet') {
       const customSort = (a, b) => {
         const dateA = a.title;
@@ -119,33 +154,26 @@ const IdeaList = () => {
         }
       };
 
-      const sortedArray = ideas.sort(customSort);
-      setIdeas((sortedArray) => sortedArray.map((item) => item));
+      const sortedArray = [...ideas].sort(customSort);
+      setIdeas(sortedArray);
     }
+  };
+
+  const handleBlur = (e) => {
+    console.log('handle blur ran');
+    setTitle((prev) => prev);
   };
 
   return (
     <div>
-      <form className={styles.tile} onSubmit={(e) => handleTileSubmit(e)}>
-        <h4>Create an Idea</h4>
-        <input
-          placeholder="Title"
-          name="title"
-          value={title}
-          onChange={(e) => handleChange(e)}
-          ref={ref}
-          autoFocus
-        />
-        <textarea
-          maxLength="140"
-          placeholder="Description"
-          name="description"
-          value={description}
-          onChange={(e) => handleChange(e)}></textarea>
-        <button type="submit" disabled={!title || !description}>
-          Create
-        </button>
-      </form>
+      <Card
+        typeOfCard="card"
+        title={title}
+        description={description}
+        handleTileChange={handleTileChange}
+        handleTileSubmit={handleTileSubmit}
+        theRef={ref}
+      />
       <h3>List of Ideas</h3>
       <form>
         <label>Sort By:</label>
@@ -162,53 +190,17 @@ const IdeaList = () => {
         ? ideas.map((idea) => {
             return (
               <div key={idea.id}>
-                <form
-                  onSubmit={(e) => handleListSubmit(e, idea.id)}
-                  className={styles.tile}>
-                  <input
-                    placeholder="Title"
-                    value={idea.title}
-                    onChange={(e) => {
-                      const title = e.target.value;
-                      setIsUpdatedDisabled(false);
-                      setIdeas(
-                        ideas.map((currentIdea) =>
-                          currentIdea.id === idea.id
-                            ? { ...currentIdea, title }
-                            : currentIdea
-                        )
-                      );
-                    }}
-                  />
-                  <textarea
-                    placeholder="Description"
-                    maxLength="140"
-                    name="description"
-                    value={idea.description}
-                    onChange={(e) => {
-                      const description = e.target.value;
-                      setIsUpdatedDisabled(false);
-                      setIdeas(
-                        ideas.map((currentIdea) =>
-                          currentIdea.id === idea.id
-                            ? { ...currentIdea, description }
-                            : currentIdea
-                        )
-                      );
-                    }}></textarea>
-                  <div className="buttonContainer">
-                    <button
-                      name="update"
-                      type="submit"
-                      disabled={isUpdatedDisabled}>
-                      Update
-                    </button>
-                    <button name="delete" type="submit">
-                      Delete
-                    </button>
-                  </div>
-                  <p>Created/Updated: {idea.date.time}</p>
-                </form>
+                <Card
+                  typeOfCard="list"
+                  title={title}
+                  description={description}
+                  handleListChange={handleListChange}
+                  handleListSubmit={handleListSubmit}
+                  handleBlur={handleBlur}
+                  isUpdateDisabled={isUpdateDisabled}
+                  idea={idea}
+                  selectedCard={selectedCard}
+                />
               </div>
             );
           })
