@@ -13,7 +13,7 @@ const ReactForm = () => {
 
   useEffect(() => {
     setFocus('title');
-  }, [setFocus]);
+  }, [ideas]);
 
   const submitList = (data) => {
     let newIdea = {
@@ -22,7 +22,7 @@ const ReactForm = () => {
       description: data.description,
     };
 
-    reset({ title: '' });
+    reset();
     setIdeas([...ideas, newIdea]);
   };
 
