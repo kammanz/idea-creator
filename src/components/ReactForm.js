@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import styles from './Card.module.css';
 
 const ReactForm = () => {
@@ -6,49 +7,80 @@ const ReactForm = () => {
     { id: 1, title: 'title1', description: 'desc1' },
     { id: 2, title: 'title2', description: 'desc2' },
     { id: 3, title: 'title3', description: 'desc3' },
-    ,
   ]);
-  // const [title, setTitle] = useState('');
-  // const [description, setDescription] = useState('');
-  // const [selectValue, setSelectValue] = useState('');
-  // const [isUpdateDisabled, setIsUpdateDisabled] = useState(true);
-  // const [selectedCard, setSelectedCard] = useState({});
+
+  const { register, handleSubmit, watch, setFocus, reset } = useForm();
 
   useEffect(() => {
-    console.log('use ef fired');
-    // fieldSet();
-  }, []);
+    setFocus('title');
+  }, [setFocus]);
 
-  const FieldSet = () => {
+  const submitList = (data) => {
+    let newIdea = {
+      id: Math.floor(Math.random() * 1000),
+      title: data.title,
+      description: data.description,
+    };
+
+    reset({ title: '' });
+    setIdeas([...ideas, newIdea]);
+  };
+
+  const handleClick = (e, id) => {
+    let filteredArray = ideas.filter((idea) => idea.id !== id);
+    setIdeas(filteredArray);
+  };
+
+  const List = () => {
+    console.log('list ran');
+
     return (
-      <fieldset className={styles.card}>
-        <label>Title</label>
-        <input
-          name="title"
-          placeholder="Title"
-          defaultValue={'test'}
-          // {...register('title')}
-          // onChange={
-          //   typeOfCard === 'list'
-          //     ? (e) => handleListChange(e, idea, console.log('here', idea))
-          //     : handleTileChange
-          // }
-          // ref={typeOfCard === 'list' ? null : theRef}
-        />
-        <label>Description</label>
-        <textarea maxLength={140}></textarea>
-      </fieldset>
+      <form onSubmit={handleSubmit(submitList)}>
+        <fieldset className={styles.card}>
+          <label>Title</label>
+          <input
+            name="title"
+            placeholder="Title"
+            defaultValue={''}
+            {...register('title')}
+          />
+          <label>Description</label>
+          <textarea
+            placeholder="Description"
+            maxLength={140}
+            defaultValue={''}
+            {...register('description')}></textarea>
+          <button type="submit">Create</button>
+        </fieldset>
+        {ideas.map((idea) => {
+          let { id, title, description } = idea;
+          return (
+            <fieldset className={styles.card} key={id}>
+              <label>Title</label>
+              <input
+                name="title"
+                placeholder="Title"
+                defaultValue={title}
+                {...register(title)}
+              />
+              <label>Description</label>
+              <textarea
+                placeholder="Description"
+                maxLength={140}
+                defaultValue={description}
+                {...register(description)}></textarea>
+              <button onClick={(e) => handleClick(e, id)}>Delete</button>
+            </fieldset>
+          );
+        })}
+      </form>
     );
   };
 
   return (
     <div>
       <div>React Form</div>
-      <form>
-        {ideas.map((idea) => (
-          <FieldSet key={idea.id} />
-        ))}
-      </form>
+      <List />
     </div>
   );
 };
