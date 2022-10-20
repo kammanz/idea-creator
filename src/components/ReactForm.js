@@ -3,31 +3,12 @@ import { useForm } from 'react-hook-form';
 import styles from './Card.module.css';
 
 const ReactForm = () => {
-  const [ideas, setIdeas] = useState([
-    {
-      id: 1,
-      title: 'title1',
-      description: 'desc1',
-      date: { numeral: 123, currentDate: 'Monday Jan 7 2022' },
-    },
-    {
-      id: 2,
-      title: 'title2',
-      description: 'desc2',
-      date: { numeral: 123, currentDate: 'Tues Jan 8 2022' },
-    },
-    {
-      id: 3,
-      title: 'title3',
-      description: 'desc3',
-      date: { numeral: 125, currentDate: 'Wed Jan 9 2022' },
-    },
-  ]);
+  const [ideas, setIdeas] = useState([]);
 
   const { register, handleSubmit, watch, setFocus, reset } = useForm();
 
   useEffect(() => {
-    setFocus('title');
+    // setFocus('title');
   }, [ideas]);
 
   let dateObject = () => {
@@ -58,21 +39,41 @@ const ReactForm = () => {
     setIdeas(filteredArray);
   };
 
+  const handleBlur = (e, id) => {
+    setIdeas((ideas) =>
+      ideas.map((idea) =>
+        id === idea.id ? (idea = { ...idea, date: dateObject() }) : idea
+      )
+    );
+  };
+
+  const handleSaveClick = (e, id) => {
+    setIdeas((ideas) =>
+      ideas.map((idea) =>
+        id === idea.id ? (idea = { ...idea, date: dateObject() }) : idea
+      )
+    );
+  };
+
+  const handleCancelChanges = (e, id) => {
+    reset();
+  };
+
   const List = () => {
     console.log('list ran');
 
     return (
       <form onSubmit={handleSubmit(submitList)}>
         <fieldset className={styles.card}>
-          <label>Title</label>
           <input
+            required
             name="title"
             placeholder="Title"
             defaultValue={''}
             {...register('title')}
           />
-          <label>Description</label>
           <textarea
+            required
             placeholder="Description"
             maxLength={140}
             defaultValue={''}
@@ -82,20 +83,34 @@ const ReactForm = () => {
         {ideas.map((idea) => {
           let { id, title, description } = idea;
           return (
-            <fieldset className={styles.card} key={id}>
-              <label>Title</label>
+            <fieldset
+              className={styles.card}
+              key={id}
+              // onBlur={(e) => handleBlur(e, id)}
+            >
               <input
+                required
                 name="title"
                 placeholder="Title"
                 defaultValue={title}
                 {...register(title)}
+                // onBlur={(e) => handleBlur(e, id)}
               />
-              <label>Description</label>
               <textarea
+                required
+                name="description"
                 placeholder="Description"
                 maxLength={140}
                 defaultValue={description}
-                {...register(description)}></textarea>
+                {...register(description)}
+                // onBlur={(e) => handleBlur(e, id)}
+              ></textarea>
+              <button onClick={(e) => handleSaveClick(e, id)}>
+                Save Changes
+              </button>
+              <button onClick={(e) => handleCancelChanges(e, id)}>
+                Cancel Changes
+              </button>
               <button onClick={(e) => handleClick(e, id)}>Delete</button>
               <p>Created/Updated: {idea.date.currentDate}</p>
             </fieldset>
