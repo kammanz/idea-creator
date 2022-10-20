@@ -169,7 +169,7 @@ const IdeaList = () => {
   //   return func;
   // };
 
-  const getStuff = (data) => {
+  const handleTileSubmit = (data) => {
     console.log('in get stuff');
     console.log('data: ', data);
     console.log('data.title: ', data.title);
@@ -204,9 +204,9 @@ const IdeaList = () => {
         typeOfCard="card"
         title={title}
         description={description}
-        handleTileChange={handleTileChange}
-        // handleTileSubmit={handleTileSubmit}
-        getStuff={getStuff}
+        // handleTileChange={handleTileChange}
+        handleTileSubmit={handleTileSubmit}
+        // getStuff={getStuff}
         // theRef={ref}
       />
       <h3>List of Ideas</h3>
@@ -227,15 +227,15 @@ const IdeaList = () => {
               <div key={idea.id}>
                 <Card2
                   typeOfCard="list"
-                  title={title}
-                  description={description}
+                  // title={title}
+                  // description={description}
                   handleListChange={handleListChange}
                   handleListSubmit={handleListSubmit}
                   handleBlur={handleBlur}
                   isUpdateDisabled={isUpdateDisabled}
                   idea={idea}
                   selectedCard={selectedCard}
-                  getStuff={getStuff}
+                  // getStuff={getStuff}
                 />
               </div>
             );

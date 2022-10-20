@@ -26,14 +26,6 @@ const Card = ({
 
   console.log('watch: ', watch('example'));
 
-  // console.log('up top, idea: (should see object): ', idea);
-  // console.log('selectedCard: ', selectedCard);
-  // console.log(
-  //   'selectedCard === idea.id: ',
-  //   idea && selectedCard.id === idea.id
-  // );
-  // console.log('typeOfCard: ', typeOfCard);
-
   return (
     <div key={typeOfCard === 'list' ? idea.id : null}>
       <form

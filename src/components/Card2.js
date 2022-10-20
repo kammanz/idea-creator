@@ -14,22 +14,18 @@ const Card2 = ({
   theRef,
   idea,
   selectedCard,
-  getStuff,
+  // getStuff,
 }) => {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
+    reset,
+    resetField,
   } = useForm();
 
-  // const onSubmit = (data) => {
-  //   console.log('data: ', data);
-  //   console.log('data.title: ', data.title);
-  //   return data && data.title;
-  // };
-
-  // console.log('onSubmit', onSubmit);
+  console.log('typeOfCard: ', typeOfCard);
 
   // getStuff(onSubmit());
 
@@ -38,11 +34,11 @@ const Card2 = ({
 
   return (
     <div key={typeOfCard === 'list' ? idea.id : null}>
-      <form onSubmit={handleSubmit(getStuff)} className={styles.tile}>
+      <form onSubmit={handleSubmit(handleTileSubmit)} className={styles.tile}>
         <input
           name="title"
           placeholder="Title"
-          defaultValue=""
+          defaultValue={typeOfCard === 'list' ? idea.title : ''}
           {...register('title')}
         />
         <textarea
@@ -50,7 +46,7 @@ const Card2 = ({
           maxLength="140"
           name="description"
           // value={typeOfCard === 'list' ? idea.description : description}
-          defaultValue={''}
+          defaultValue={typeOfCard === 'list' ? idea.description : ''}
           {...register('description')}
           onChange={
             typeOfCard === 'list'
@@ -66,7 +62,17 @@ const Card2 = ({
               Save
             </button>
           ) : (
-            <button type="submit" disabled={false}>
+            <button
+              type="submit"
+              disabled={false}
+              onClick={
+                typeOfCard === 'card'
+                  ? () => {
+                      console.log('on click button ran');
+                      // resetField('title');
+                    }
+                  : null
+              }>
               Create
             </button>
           )}
