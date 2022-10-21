@@ -4,12 +4,31 @@ import styles from './Card.module.css';
 
 const ReactForm = () => {
   const [ideas, setIdeas] = useState([]);
+  const [isSafeToReset, setIsSafeToReset] = useState(false);
+  const [isSaveButtonActive, setIsSaveButtonActive] = useState(false);
 
-  const { register, handleSubmit, watch, setFocus, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setFocus,
+    // reset,
+    resetField,
+    // control,
+    // formState: { dirtyFields },
+    // getValues,
+  } = useForm();
 
-  useEffect(() => {
-    // setFocus('title');
-  }, [ideas]);
+  // console.log('defaultValues', defaultValues);
+  // console.log('dirtyFields', dirtyFields);
+
+  // watch('title');
+
+  // useEffect(() => {
+  //   if (!isSafeToReset) return;
+  // resetField('title');
+  // resetField('description');
+  // }, [ideas]);
 
   let dateObject = () => {
     let date = new Date();
@@ -22,7 +41,8 @@ const ReactForm = () => {
     };
   };
 
-  const submitList = (data) => {
+  const onSubmit = (data) => {
+    console.log('data: ', data);
     let newIdea = {
       id: Math.floor(Math.random() * 1000),
       title: data.title,
@@ -30,21 +50,10 @@ const ReactForm = () => {
       date: dateObject(),
     };
 
-    reset();
     setIdeas([...ideas, newIdea]);
-  };
-
-  const handleClick = (e, id) => {
-    let filteredArray = ideas.filter((idea) => idea.id !== id);
-    setIdeas(filteredArray);
-  };
-
-  const handleBlur = (e, id) => {
-    setIdeas((ideas) =>
-      ideas.map((idea) =>
-        id === idea.id ? (idea = { ...idea, date: dateObject() }) : idea
-      )
-    );
+    setIsSafeToReset(true);
+    resetField('title');
+    resetField('description');
   };
 
   const handleSaveClick = (e, id) => {
@@ -55,15 +64,16 @@ const ReactForm = () => {
     );
   };
 
-  const handleCancelChanges = (e, id) => {
-    reset();
+  const onChange = (e) => {
+    console.log('', e.target.value);
+    // setIsSaveButtonActive(true);
   };
 
   const List = () => {
     console.log('list ran');
 
     return (
-      <form onSubmit={handleSubmit(submitList)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <fieldset className={styles.card}>
           <input
             required
@@ -83,18 +93,13 @@ const ReactForm = () => {
         {ideas.map((idea) => {
           let { id, title, description } = idea;
           return (
-            <fieldset
-              className={styles.card}
-              key={id}
-              // onBlur={(e) => handleBlur(e, id)}
-            >
+            <fieldset className={styles.card} key={id}>
               <input
                 required
                 name="title"
                 placeholder="Title"
                 defaultValue={title}
-                {...register(title)}
-                // onBlur={(e) => handleBlur(e, id)}
+                {...register(`${id}`)}
               />
               <textarea
                 required
@@ -103,15 +108,14 @@ const ReactForm = () => {
                 maxLength={140}
                 defaultValue={description}
                 {...register(description)}
-                // onBlur={(e) => handleBlur(e, id)}
-              ></textarea>
-              <button onClick={(e) => handleSaveClick(e, id)}>
+                onChange={onChange}></textarea>
+              <button
+                onClick={(e) => handleSaveClick(e, id)}
+                disabled={isSaveButtonActive ? false : true}>
                 Save Changes
               </button>
-              <button onClick={(e) => handleCancelChanges(e, id)}>
-                Cancel Changes
-              </button>
-              <button onClick={(e) => handleClick(e, id)}>Delete</button>
+              <button>Cancel Changes</button>
+              <button>Delete</button>
               <p>Created/Updated: {idea.date.currentDate}</p>
             </fieldset>
           );
