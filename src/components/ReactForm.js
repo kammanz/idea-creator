@@ -13,19 +13,23 @@ export const Form3 = () => (
   <div>
     <Formik
       initialValues={{
-        // ideas: [{ id: 5, title: 'swsw', description: 'swsws' }],
-        // ideas: [{ id: '5', title: 'bob', description: 'bob2' }],
         ideas: [],
         initialIdea: { title: '', description: '' },
       }}
       onSubmit={() => {}}>
-      {({ values, values: { ideas, initialIdea }, handleChange }) => (
+      {({
+        values,
+        values: { ideas, initialIdea },
+        handleChange,
+        resetForm,
+        actions,
+      }) => (
         <Form>
           <FieldArray name="ideas">
             {({ push }) => (
               <>
                 <div>
-                  <label htmlFor={`ideas[0].title`}>Title</label>
+                  <label htmlFor={`initialIdea.title`}>Title</label>
                   <br />
                   <input
                     type="text"
@@ -34,7 +38,7 @@ export const Form3 = () => (
                     onChange={handleChange}
                   />
                   <br />
-                  <label htmlFor={`ideas[0].description`}>Description</label>
+                  <label htmlFor={`initialIdea.description`}>Description</label>
                   <br />
                   <input
                     type="textarea"
@@ -56,6 +60,8 @@ export const Form3 = () => (
                         dateNumber: dateNumber,
                         dateString: dateString,
                       });
+                      initialIdea.title = '';
+                      initialIdea.description = '';
                     }}>
                     Add to list
                   </button>
