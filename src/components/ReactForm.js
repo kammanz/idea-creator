@@ -1,13 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field, onChange, FieldArray } from 'formik';
 import styles from './Card.module.css';
-const Input = () => {
-  return (
-    <>
-      <input type="text" />
-    </>
-  );
-};
 
 export const Form3 = () => (
   <div>
@@ -17,13 +10,7 @@ export const Form3 = () => (
         initialIdea: { title: '', description: '' },
       }}
       onSubmit={() => {}}>
-      {({
-        values,
-        values: { ideas, initialIdea },
-        handleChange,
-        resetForm,
-        actions,
-      }) => (
+      {({ values, values: { ideas, initialIdea }, handleChange }) => (
         <Form>
           <FieldArray name="ideas">
             {({ push }) => (
@@ -32,6 +19,7 @@ export const Form3 = () => (
                   <label htmlFor={`initialIdea.title`}>Title</label>
                   <br />
                   <input
+                    required
                     type="text"
                     name={`initialIdea.title`}
                     value={initialIdea.title}
@@ -40,8 +28,10 @@ export const Form3 = () => (
                   <br />
                   <label htmlFor={`initialIdea.description`}>Description</label>
                   <br />
-                  <input
-                    type="textarea"
+                  <Field
+                    required
+                    component="textarea"
+                    rows="4"
                     name={`initialIdea.description`}
                     value={initialIdea.description}
                     onChange={handleChange}
@@ -81,8 +71,9 @@ export const Form3 = () => (
                             />
                             <br />
                             <label>Description</label>
-                            <input
-                              type="text"
+                            <Field
+                              component="textarea"
+                              rows="4"
                               name={`ideas[${index}].description`}
                               value={idea.description}
                               onChange={handleChange}
