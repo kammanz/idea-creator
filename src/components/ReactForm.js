@@ -1,77 +1,94 @@
 import React from 'react';
 import { Formik, Form, Field, onChange, FieldArray } from 'formik';
-
-// const Input = () => {
-//     return (
-//         <>
-//         <input
-//         </>
-//     )
-// }
+import styles from './Card.module.css';
+const Input = () => {
+  return (
+    <>
+      <input type="text" />
+    </>
+  );
+};
 
 export const Form3 = () => (
   <div>
     <Formik
       initialValues={{
         // ideas: [{ id: 5, title: 'swsw', description: 'swsws' }],
-        // people: [{ id: '5', firstName: 'bob', lastName: 'bob2' }],
-        people: [{ id: 5, firstName: '', lastName: '' }],
+        // ideas: [{ id: '5', title: 'bob', description: 'bob2' }],
+        ideas: [],
+        initialIdea: { title: '', description: '' },
       }}
       onSubmit={() => {}}>
-      {({ values, handleChange }) => (
+      {({ values, values: { ideas, initialIdea }, handleChange }) => (
         <Form>
-          <FieldArray name="people">
+          <FieldArray name="ideas">
             {({ push }) => (
-              <div>
-                {values.people && values.people.length > 0 ? (
-                  values.people.map((person, index) => {
-                    console.log('ran');
-                    return (
-                      <div key={person.id}>
-                        <input
-                          type="text"
-                          name={`people[${index}].firstName`}
-                          value={person.firstName}
-                          onChange={handleChange}
-                        />
-                        <input
-                          type="text"
-                          name={`people[${index}].lastName`}
-                          value={person.lastName}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div>
-                    {' '}
-                    <input
-                      type="text"
-                      name={`values.people[0].firstName`}
-                      value={values.people[0].firstName}
-                      onChange={handleChange}
-                    />
-                    <input
-                      type="text"
-                      name={`values.people[0].lastName`}
-                      value={values.people[0].lastName}
-                      onChange={handleChange}
-                    />
-                  </div>
-                )}
-                <button
-                  type="button"
-                  onClick={() =>
-                    push({
-                      id: Math.random(Math.floor * 1000),
-                      firstName: '',
-                      lastName: '',
-                    })
-                  }>
-                  Add to list
-                </button>
-              </div>
+              <>
+                <div>
+                  <label htmlFor={`ideas[0].title`}>Title</label>
+                  <br />
+                  <input
+                    type="text"
+                    name={`initialIdea.title`}
+                    value={initialIdea.title}
+                    onChange={handleChange}
+                  />
+                  <br />
+                  <label htmlFor={`ideas[0].description`}>Description</label>
+                  <br />
+                  <input
+                    type="textarea"
+                    name={`initialIdea.description`}
+                    value={initialIdea.description}
+                    onChange={handleChange}
+                  />
+                  <br />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      let date = new Date();
+                      let dateNumber = date.getTime();
+                      let dateString = date.toLocaleString();
+                      push({
+                        id: Math.random(Math.floor * 1000),
+                        title: initialIdea.title,
+                        description: initialIdea.description,
+                        dateNumber: dateNumber,
+                        dateString: dateString,
+                      });
+                    }}>
+                    Add to list
+                  </button>
+                </div>
+                <div>
+                  {ideas && ideas.length > 0
+                    ? ideas.map((idea, index) => {
+                        console.log('ran');
+                        return (
+                          <div key={idea.id} className={styles.card}>
+                            <label>Title</label>
+                            <input
+                              type="text"
+                              name={`ideas[${index}].title`}
+                              value={idea.title}
+                              onChange={handleChange}
+                            />
+                            <br />
+                            <label>Description</label>
+                            <input
+                              type="text"
+                              name={`ideas[${index}].description`}
+                              value={idea.description}
+                              onChange={handleChange}
+                            />
+                            <p>Created/Updated on: {idea.dateString}</p>
+                          </div>
+                        );
+                      })
+                    : null}
+                  <br />
+                </div>
+              </>
             )}
           </FieldArray>
           <div>
