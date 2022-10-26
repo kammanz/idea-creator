@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect, createRef } from 'react';
 import styles from './IdeaList.module.css';
 
-import Card from './Card';
+import Card2 from './Card2';
 
 const IdeaList = () => {
   const [ideas, setIdeas] = useState([]);
@@ -25,30 +25,30 @@ const IdeaList = () => {
     }
   };
 
-  const handleTileSubmit = (e) => {
-    console.log('handle tile submit ran');
-    e.preventDefault();
-    let date = new Date();
-    let currentDate = date.getTime();
-    let currentTime = date.toLocaleString();
+  // const handleTileSubmit = (e) => {
+  //   console.log('handle tile submit ran');
+  //   e.preventDefault();
+  //   let date = new Date();
+  //   let currentDate = date.getTime();
+  //   let currentTime = date.toLocaleString();
 
-    setIdeas([
-      ...ideas,
-      {
-        id: Math.floor(Math.random() * 1000),
-        title,
-        description,
-        date: {
-          currentDate: currentDate,
-          time: currentTime,
-        },
-      },
-    ]);
-    setTitle('');
-    setDescription('');
-    setIsUpdateDisabled(true);
-    ref.current.focus();
-  };
+  //   setIdeas([
+  //     ...ideas,
+  //     {
+  //       id: Math.floor(Math.random() * 1000),
+  //       title,
+  //       description,
+  //       date: {
+  //         currentDate: currentDate,
+  //         time: currentTime,
+  //       },
+  //     },
+  //   ]);
+  //   setTitle('');
+  //   setDescription('');
+  //   setIsUpdateDisabled(true);
+  //   ref.current.focus();
+  // };
 
   const handleListChange = (e, idea) => {
     console.log('list, on change ran');
@@ -164,15 +164,50 @@ const IdeaList = () => {
     setTitle((prev) => prev);
   };
 
+  // const getStuff = (func) => {
+  //   console.log('in get stuff: ', func);
+  //   return func;
+  // };
+
+  const handleTileSubmit = (data) => {
+    console.log('in get stuff');
+    console.log('data: ', data);
+    console.log('data.title: ', data.title);
+    console.log('data.description: ', data.description);
+    console.log('handle tile submit ran');
+    // e.preventDefault();
+    let date = new Date();
+    let currentDate = date.getTime();
+    let currentTime = date.toLocaleString();
+
+    setIdeas([
+      ...ideas,
+      {
+        id: Math.floor(Math.random() * 1000),
+        title: data.title,
+        description: data.description,
+        date: {
+          currentDate: currentDate,
+          time: currentTime,
+        },
+      },
+    ]);
+    setTitle('');
+    setDescription('');
+    setIsUpdateDisabled(true);
+    // return data && data.title;
+  };
+
   return (
     <div>
-      <Card
+      <Card2
         typeOfCard="card"
         title={title}
         description={description}
-        handleTileChange={handleTileChange}
+        // handleTileChange={handleTileChange}
         handleTileSubmit={handleTileSubmit}
-        theRef={ref}
+        // getStuff={getStuff}
+        // theRef={ref}
       />
       <h3>List of Ideas</h3>
       <form>
@@ -190,16 +225,17 @@ const IdeaList = () => {
         ? ideas.map((idea) => {
             return (
               <div key={idea.id}>
-                <Card
+                <Card2
                   typeOfCard="list"
-                  title={title}
-                  description={description}
+                  // title={title}
+                  // description={description}
                   handleListChange={handleListChange}
                   handleListSubmit={handleListSubmit}
                   handleBlur={handleBlur}
                   isUpdateDisabled={isUpdateDisabled}
                   idea={idea}
                   selectedCard={selectedCard}
+                  // getStuff={getStuff}
                 />
               </div>
             );
