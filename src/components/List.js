@@ -93,14 +93,14 @@ const List = () => {
                 title={title}
                 description={description}
                 date={dateString}
+                selectedIdea={selectedIdea}
+                isSelectedIdea={selectedIdea.id === id}
                 handleDelete={handleDelete}
                 handleUpdate={handleUpdate}
                 handleActivateTitle={handleActivateTitle}
-                selectedIdea={selectedIdea}
-                isSelectedIdea={selectedIdea.id === id}
+                handleActivateDescription={handleActivateDescription}
                 handleTitleChange={handleTitleChange}
                 handleDescriptionChange={handleDescriptionChange}
-                handleActivateDescription={handleActivateDescription}
               />
             </div>
           );
