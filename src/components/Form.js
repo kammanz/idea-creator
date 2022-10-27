@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 
-const Form9 = ({ handleSubmit }) => {
+const TheForm = ({ handleSubmit }) => {
   return (
     <div>
       <Formik
@@ -47,4 +47,4 @@ const Form9 = ({ handleSubmit }) => {
   );
 };
 
-export default Form9;
+export default TheForm;
