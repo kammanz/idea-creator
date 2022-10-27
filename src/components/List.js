@@ -1,13 +1,10 @@
 import React from 'react';
-import { useState, useEffect, createRef } from 'react';
-
-import formik from 'formik';
-import styles from './IdeaList.module.css';
+import { useState } from 'react';
 
 import Card27 from './Card27';
 import Form9 from './Formik';
 
-const IdeaList = () => {
+const List = () => {
   const [ideas, setIdeas] = useState([]);
 
   const handleSubmit = (values) => {
@@ -26,28 +23,34 @@ const IdeaList = () => {
     setIdeas([...ideas, newIdea]);
   };
 
+  const handleDelete = (id) => {
+    let filteredList = ideas.filter((idea) => idea.id !== id);
+    setIdeas(filteredList);
+  };
+
   return (
     <>
       <h4>Create an Idea</h4>
       <Form9 handleSubmit={handleSubmit} />
       <h4>List of Ideas</h4>
-      {ideas && ideas.length > 0
-        ? ideas.map((idea) => {
-            let { title, description, id, dateString } = idea;
-            console.log('idea', idea);
-            // return <div key={idea.id}>{idea.title}</div>;
-            return (
+      {ideas &&
+        ideas.map((idea, i) => {
+          let { title, description, id, dateString } = idea;
+          return (
+            <div key={i}>
               <Card27
-                key={id}
-                title={idea.title}
+                id={id}
+                title={title}
                 description={description}
                 date={dateString}
+                handleDelete={handleDelete}
+                setIdeas={setIdeas}
               />
-            );
-          })
-        : null}
+            </div>
+          );
+        })}
     </>
   );
 };
 
-export default IdeaList;
+export default List;
