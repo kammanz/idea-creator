@@ -25,31 +25,6 @@ const IdeaList = () => {
     }
   };
 
-  // const handleTileSubmit = (e) => {
-  //   console.log('handle tile submit ran');
-  //   e.preventDefault();
-  //   let date = new Date();
-  //   let currentDate = date.getTime();
-  //   let currentTime = date.toLocaleString();
-
-  //   setIdeas([
-  //     ...ideas,
-  //     {
-  //       id: Math.floor(Math.random() * 1000),
-  //       title,
-  //       description,
-  //       date: {
-  //         currentDate: currentDate,
-  //         time: currentTime,
-  //       },
-  //     },
-  //   ]);
-  //   setTitle('');
-  //   setDescription('');
-  //   setIsUpdateDisabled(true);
-  //   ref.current.focus();
-  // };
-
   const handleListChange = (e, idea) => {
     console.log('list, on change ran');
     console.log('e: ', e);
