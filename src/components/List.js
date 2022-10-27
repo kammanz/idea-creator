@@ -28,6 +28,27 @@ const List = () => {
     setIdeas(filteredList);
   };
 
+  const handleUpdate = ({ id, title, description }) => {
+    let date = new Date();
+    let dateNum = date.getTime();
+    let dateString = date.toLocaleString();
+
+    const updatedIdea = {
+      title,
+      description,
+      dateNum,
+      dateString,
+    };
+
+    let updatedList = ideas.map((idea) =>
+      idea.id === id
+        ? { ...idea, title, description, dateNum, dateString }
+        : idea
+    );
+
+    setIdeas(updatedList);
+  };
+
   return (
     <>
       <h4>Create an Idea</h4>
@@ -44,7 +65,7 @@ const List = () => {
                 description={description}
                 date={dateString}
                 handleDelete={handleDelete}
-                setIdeas={setIdeas}
+                handleUpdate={handleUpdate}
               />
             </div>
           );
