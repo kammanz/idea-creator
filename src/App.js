@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
-import IdeaList from './components/IdeaList';
-import List2 from './components/List2';
+// import IdeaList from './components/IdeaList';
+import List from './components/List';
 import Header from './components/Header';
 import ReactForm from './components/ReactForm';
 
@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="container">
       <Header />
-      <List2 />
+      <List />
       {/* <ReactForm /> */}
     </div>
   );
