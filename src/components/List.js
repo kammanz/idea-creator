@@ -1,11 +1,16 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Card from './Card';
 import Form from './Form';
 
 const List = () => {
   const [ideas, setIdeas] = useState([]);
+  const [selectedIdea, setSelectedIdea] = useState({});
+
+  useEffect(() => {
+    setSelectedIdea({});
+  }, [ideas]);
 
   const handleSubmit = (values) => {
     const { title, description } = values;
@@ -24,29 +29,53 @@ const List = () => {
   };
 
   const handleDelete = (id) => {
-    let filteredList = ideas.filter((idea) => idea.id !== id);
+    let filteredList = [...ideas].filter((idea) => idea.id !== id);
     setIdeas(filteredList);
   };
 
-  const handleUpdate = ({ id, title, description }) => {
+  const handleUpdate = (id) => {
     let date = new Date();
     let dateNum = date.getTime();
     let dateString = date.toLocaleString();
-
-    const updatedIdea = {
-      title,
-      description,
-      dateNum,
-      dateString,
-    };
-
-    let updatedList = ideas.map((idea) =>
-      idea.id === id
-        ? { ...idea, title, description, dateNum, dateString }
-        : idea
-    );
+    let updatedList = [...ideas].map((idea) => {
+      return idea.id === id
+        ? {
+            ...idea,
+            title: selectedIdea.title,
+            description: selectedIdea.description,
+            dateNum,
+            dateString,
+          }
+        : idea;
+    });
 
     setIdeas(updatedList);
+  };
+
+  const handleActivateTitle = (id) => {
+    const selectedItem = ideas.find((idea) => idea.id === id);
+    setSelectedIdea({
+      ...selectedItem,
+      isTitleActive: true,
+      isDescriptionActive: false,
+    });
+  };
+
+  const handleActivateDescription = (id) => {
+    const selectedItem = ideas.find((idea) => idea.id === id);
+    setSelectedIdea({
+      ...selectedItem,
+      isTitleActive: false,
+      isDescriptionActive: true,
+    });
+  };
+
+  const handleTitleChange = (e) => {
+    setSelectedIdea({ ...selectedIdea, title: e.target.value });
+  };
+
+  const handleDescriptionChange = (e) => {
+    setSelectedIdea({ ...selectedIdea, description: e.target.value });
   };
 
   return (
@@ -66,6 +95,12 @@ const List = () => {
                 date={dateString}
                 handleDelete={handleDelete}
                 handleUpdate={handleUpdate}
+                handleActivateTitle={handleActivateTitle}
+                selectedIdea={selectedIdea}
+                isSelectedIdea={selectedIdea.id === id}
+                handleTitleChange={handleTitleChange}
+                handleDescriptionChange={handleDescriptionChange}
+                handleActivateDescription={handleActivateDescription}
               />
             </div>
           );
