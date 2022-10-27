@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 
-import Card27 from './Card27';
-import Form9 from './Formik';
+import Card from './Card';
+import Form from './Form';
 
 const List = () => {
   const [ideas, setIdeas] = useState([]);
@@ -31,14 +31,14 @@ const List = () => {
   return (
     <>
       <h4>Create an Idea</h4>
-      <Form9 handleSubmit={handleSubmit} />
+      <Form handleSubmit={handleSubmit} />
       <h4>List of Ideas</h4>
       {ideas &&
         ideas.map((idea, i) => {
           let { title, description, id, dateString } = idea;
           return (
             <div key={i}>
-              <Card27
+              <Card
                 id={id}
                 title={title}
                 description={description}
