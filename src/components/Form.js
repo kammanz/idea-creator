@@ -21,18 +21,16 @@ const Form9 = ({ handleSubmit }) => {
             <br />
             <input
               required
-              placeholder="here"
               type="text"
               name="title"
               value={values.title}
               onChange={handleChange}
             />
             <br />
-            <label htmlFor="title">Description</label>
+            <label htmlFor="description">Description</label>
             <br />
             <input
               required
-              placeholder="here"
               type="textarea"
               name="description"
               value={values.description}
@@ -44,9 +42,6 @@ const Form9 = ({ handleSubmit }) => {
             <pre>{JSON.stringify(values, null, 2)}</pre>
           </Form>
         )}
-        {/* <Form>
-          <input type="text" name="title" value={values} />
-        </Form> */}
       </Formik>
     </div>
   );
