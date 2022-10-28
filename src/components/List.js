@@ -34,6 +34,8 @@ const List = () => {
   };
 
   const handleUpdate = (id) => {
+    console.log('handle update ran');
+    console.log('selectedIdea.title', selectedIdea.title);
     let date = new Date();
     let dateNum = date.getTime();
     let dateString = date.toLocaleString();
@@ -78,6 +80,11 @@ const List = () => {
     setSelectedIdea({ ...selectedIdea, description: e.target.value });
   };
 
+  const handleBlur = () => {
+    console.log('handle blur');
+    setSelectedIdea({});
+  };
+
   return (
     <>
       <h4>Create an Idea</h4>
@@ -101,6 +108,7 @@ const List = () => {
                 handleActivateDescription={handleActivateDescription}
                 handleTitleChange={handleTitleChange}
                 handleDescriptionChange={handleDescriptionChange}
+                handleBlur={handleUpdate}
               />
             </div>
           );

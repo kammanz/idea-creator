@@ -3,6 +3,7 @@ import styles from './Card.module.css';
 
 const Card = ({
   selectedIdea,
+  selectedIdea: { isTitleActive, isDescriptionActive },
   title,
   description,
   date,
@@ -14,19 +15,21 @@ const Card = ({
   handleTitleChange,
   handleDescriptionChange,
   handleActivateDescription,
+  handleBlur,
 }) => {
   return (
     <div className={styles.card}>
-      {isSelectedIdea && selectedIdea.isTitleActive ? (
+      {isSelectedIdea && isTitleActive ? (
         <input
           type="text"
           defaultValue={selectedIdea.title}
           onChange={handleTitleChange}
+          onBlur={handleBlur}
         />
       ) : (
         <div onClick={() => handleActivateTitle(id)}>title: {title}</div>
       )}
-      {isSelectedIdea && selectedIdea.isDescriptionActive ? (
+      {isSelectedIdea && isDescriptionActive ? (
         <input
           type="textarea"
           defaultValue={selectedIdea.description}
@@ -38,7 +41,16 @@ const Card = ({
         </div>
       )}
       <div>Created/Updated: {date}</div>
-      <button onClick={() => handleUpdate(id)}>Update</button>
+      <button
+        onClick={() => handleUpdate(id)}
+        disabled={
+          (isSelectedIdea && isTitleActive) ||
+          (isSelectedIdea && isDescriptionActive)
+            ? false
+            : true
+        }>
+        Save
+      </button>
       <button onClick={() => handleDelete(id)}>Delete</button>
     </div>
   );
