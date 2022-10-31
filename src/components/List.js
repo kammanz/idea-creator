@@ -6,20 +6,24 @@ import Form from './Form';
 
 const List = () => {
   const [ideas, setIdeas] = useState([]);
-  const [selectedIdea, setSelectedIdea] = useState({});
+  const [selectedId, setSelectedId] = useState(null);
 
-  useEffect(() => {
-    setSelectedIdea({});
-  }, [ideas]);
+  // useEffect(() => {
+  //   setSelectedId();
+  // }, [ideas]);
 
   useEffect(() => {
     if (inputRef.current !== undefined) {
       console.log('inputRef, inside conditional: ');
       inputRef && inputRef.current?.focus();
     }
-  }, [selectedIdea]);
+  }, [selectedId]);
 
   let inputRef = React.useRef();
+
+  // let selectedIdea = ideas.find((idea) => idea.id === selectedId);
+  // selectedIdea = { ...selectedIdea, isTitleActive: true };
+  // selectedIdea = { ...selectedIdea, isDescriptionActive: true };
 
   const handleSubmit = (values) => {
     const { title, description } = values;
@@ -33,6 +37,8 @@ const List = () => {
       description,
       dateNum,
       dateString,
+      isTitleActive: false,
+      isDescriptionActive: false,
     };
     setIdeas([...ideas, newIdea]);
   };
@@ -44,8 +50,8 @@ const List = () => {
 
   const handleUpdate = (id) => {
     console.log('handle update ran');
-    console.log('selectedIdea.title', selectedIdea.title);
-    console.log('selectedIdea.description', selectedIdea.description);
+    // console.log('selectedIdea.title', selectedIdea.title);
+    // console.log('selectedIdea.description', selectedIdea.description);
     let date = new Date();
     let dateNum = date.getTime();
     let dateString = date.toLocaleString();
@@ -54,8 +60,8 @@ const List = () => {
       return idea.id === id
         ? {
             ...idea,
-            title: selectedIdea.title,
-            description: selectedIdea.description,
+            title: idea.title,
+            description: idea.description,
             dateNum,
             dateString,
           }
@@ -63,44 +69,85 @@ const List = () => {
     });
 
     setIdeas(updatedList);
+    setSelectedId({});
   };
 
   const handleActivateTitle = (e, id) => {
-    console.log('e.target', e.currentTarget);
+    setSelectedId(id);
+    // console.log('e.target', e.currentTarget);
     const selectedItem = ideas.find((idea) => idea.id === id);
-    setSelectedIdea({
-      ...selectedItem,
-      isTitleActive: true,
-      isDescriptionActive: false,
-    });
+
+    setIdeas((currentIdeas) =>
+      currentIdeas.map((idea) => {
+        // if (idea.id === id) {
+        //   return { ...idea, title: e.target.value };
+        // } else {
+        //   return idea;
+        // }
+        return idea.id === selectedItem.id
+          ? { ...idea, isTitleActive: true, isDescriptionActive: false }
+          : idea;
+      })
+    );
+
+    // setSelectedIdea({
+    //   ...selectedItem,
+    //   isTitleActive: true,
+    //   isDescriptionActive: false,
+    // });
+
     // console.log(inputRef.current);
     // inputRef.current?.focus();
   };
 
-  const handleActivateDescription = (id) => {
+  const handleActivateDescription = (e, id) => {
+    setSelectedId(id);
     const selectedItem = ideas.find((idea) => idea.id === id);
-    setSelectedIdea({
-      ...selectedItem,
-      isTitleActive: false,
-      isDescriptionActive: true,
-    });
+
+    setIdeas((currentIdeas) =>
+      currentIdeas.map((idea) => {
+        // if (idea.id === id) {
+        //   return { ...idea, title: e.target.value };
+        // } else {
+        //   return idea;
+        // }
+        return idea.id === selectedItem.id
+          ? { ...idea, isTitleActive: false, isDescriptionActive: false }
+          : idea;
+      })
+    );
+    // setSelectedIdea({
+    //   ...selectedItem,
+    //   isTitleActive: false,
+    //   isDescriptionActive: true,
+    // });
   };
 
-  const handleTitleChange = (e) => {
-    setSelectedIdea({ ...selectedIdea, title: e.target.value });
+  const handleTitleChange = (e, id) => {
+    // setSelectedIdea({ ...selectedIdea, title: e.target.value });
+    setIdeas((currentIdeas) =>
+      currentIdeas.map((idea) => {
+        // if (idea.id === id) {
+        //   return { ...idea, title: e.target.value };
+        // } else {
+        //   return idea;
+        // }
+        return idea.id === id ? { ...idea, title: e.target.value } : idea;
+      })
+    );
   };
 
-  const handleDescriptionChange = (e) => {
-    setSelectedIdea({ ...selectedIdea, description: e.target.value });
-  };
-
-  const handleBlur = () => {
-    console.log('handle blur');
-    setSelectedIdea({});
+  const handleDescriptionChange = (e, id) => {
+    // setSelectedIdea({ ...selectedIdea, description: e.target.value });
+    setIdeas((currentIdeas) =>
+      currentIdeas.map((idea) => {
+        return idea.id === id ? { ...idea, description: e.target.value } : idea;
+      })
+    );
   };
 
   const handleCancel = () => {
-    setSelectedIdea({});
+    setSelectedId(null);
   };
 
   return (
@@ -118,8 +165,8 @@ const List = () => {
                 title={title}
                 description={description}
                 date={dateString}
-                selectedIdea={selectedIdea}
-                isSelectedIdea={selectedIdea.id === id}
+                selectedIdea={idea}
+                isSelectedIdea={idea.id === id}
                 handleDelete={handleDelete}
                 handleUpdate={handleUpdate}
                 handleActivateTitle={handleActivateTitle}
