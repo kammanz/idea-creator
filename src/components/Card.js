@@ -42,10 +42,6 @@ const Card = (
         //   isSubmitting,
         // }
       ) => {
-        console.log('formik: ', formik);
-        // console.log('touched', touched);
-        // console.log('initialStatus', initialStatus);
-        // console.log('isSubmitting', isSubmitting);
         return (
           <Form>
             <div className={styles.card}>
@@ -53,7 +49,7 @@ const Card = (
                 ref={ref}
                 type="text"
                 name="title"
-                defaultValue={formik.values.title}
+                value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -62,7 +58,7 @@ const Card = (
                 ref={ref}
                 type="textarea"
                 name="description"
-                defaultValue={formik.values.description}
+                value={formik.values.description}
                 onChange={formik.handleChange}
               />
               <div>Created/Updated: {date}</div>
@@ -71,9 +67,7 @@ const Card = (
                 disabled={formik.dirty ? false : true}>
                 Save
               </button>
-              <button
-                onClick={handleCancel}
-                disabled={formik.dirty ? false : true}>
+              <button type="reset" disabled={formik.dirty ? false : true}>
                 Cancel
               </button>
               <button onClick={() => handleDelete(id)}>Delete</button>
