@@ -23,6 +23,7 @@ const Card = ({ title, description, date, id, handleDelete, handleUpdate }) => {
               />
               <br />
               <textarea
+                maxLength={140}
                 type="textarea"
                 name="description"
                 value={formik.values.description}
