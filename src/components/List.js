@@ -170,7 +170,7 @@ const List = () => {
                 handleDescriptionChange={handleDescriptionChange}
                 handleBlur={handleUpdate}
                 // handleCancel={handleCancel}
-                ref={inputRef}
+                // ref={inputRef}
               />
             </div>
           );
