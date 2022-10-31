@@ -23,25 +23,13 @@ const Card = (
   },
   ref
 ) => {
-  const inputRef2 = React.useRef();
-  console.log('inputRef2', inputRef2);
   return (
     <Formik
       initialValues={{ title: title, description: description, id: id }}
       onSubmit={(values, actions) => {
-        handleSubmit(values);
+        handleUpdate(values);
       }}>
-      {(
-        formik
-        // {
-        //   values,
-        //   handleChange,
-        //   handleBlur,
-        //   touched,
-        //   initialStatus,
-        //   isSubmitting,
-        // }
-      ) => {
+      {(formik) => {
         return (
           <Form>
             <div className={styles.card}>
@@ -53,7 +41,7 @@ const Card = (
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-
+              <br />
               <textarea
                 ref={ref}
                 type="textarea"
@@ -62,9 +50,7 @@ const Card = (
                 onChange={formik.handleChange}
               />
               <div>Created/Updated: {date}</div>
-              <button
-                onClick={() => handleUpdate(id)}
-                disabled={formik.dirty ? false : true}>
+              <button type="submit" disabled={formik.dirty ? false : true}>
                 Save
               </button>
               <button type="reset" disabled={formik.dirty ? false : true}>

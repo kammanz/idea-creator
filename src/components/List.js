@@ -21,10 +21,6 @@ const List = () => {
 
   let inputRef = React.useRef();
 
-  // let selectedIdea = ideas.find((idea) => idea.id === selectedId);
-  // selectedIdea = { ...selectedIdea, isTitleActive: true };
-  // selectedIdea = { ...selectedIdea, isDescriptionActive: true };
-
   const handleSubmit = (values) => {
     const { title, description } = values;
     let date = new Date();
@@ -48,20 +44,19 @@ const List = () => {
     setIdeas(filteredList);
   };
 
-  const handleUpdate = (id) => {
+  const handleUpdate = (updatedIdea) => {
     console.log('handle update ran');
-    // console.log('selectedIdea.title', selectedIdea.title);
-    // console.log('selectedIdea.description', selectedIdea.description);
+    console.log('updatedIdea', updatedIdea);
     let date = new Date();
     let dateNum = date.getTime();
     let dateString = date.toLocaleString();
     let updatedList = [...ideas].map((idea) => {
       console.log('inside map');
-      return idea.id === id
+      return idea.id === updatedIdea.id
         ? {
             ...idea,
-            title: idea.title,
-            description: idea.description,
+            title: updatedIdea.title,
+            description: updatedIdea.description,
             dateNum,
             dateString,
           }
@@ -146,9 +141,9 @@ const List = () => {
     );
   };
 
-  const handleCancel = () => {
-    setSelectedId(null);
-  };
+  // const handleCancel = () => {
+  //   setSelectedId(null);
+  // };
 
   return (
     <>
@@ -174,7 +169,7 @@ const List = () => {
                 handleTitleChange={handleTitleChange}
                 handleDescriptionChange={handleDescriptionChange}
                 handleBlur={handleUpdate}
-                handleCancel={handleCancel}
+                // handleCancel={handleCancel}
                 ref={inputRef}
               />
             </div>
