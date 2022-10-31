@@ -31,6 +31,7 @@ const TheForm = ({ handleSubmit, inputRef }) => {
             <label htmlFor="description">Description</label>
             <br />
             <textarea
+              maxLength={140}
               required
               type="textarea"
               name="description"
