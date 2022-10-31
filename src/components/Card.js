@@ -17,7 +17,7 @@ const Card = (
     handleTitleChange,
     handleDescriptionChange,
     handleActivateDescription,
-    handleBlur,
+    // handleBlur,
     handleCancel,
     handleSubmit,
   },
@@ -31,50 +31,57 @@ const Card = (
       onSubmit={(values, actions) => {
         handleSubmit(values);
       }}>
-      {({ values, handleChange }) => (
-        <Form>
-          <div className={styles.card}>
-            <input
-              ref={ref}
-              type="text"
-              name="title"
-              defaultValue={values.title}
-              onChange={handleChange}
-            />
+      {(
+        formik
+        // {
+        //   values,
+        //   handleChange,
+        //   handleBlur,
+        //   touched,
+        //   initialStatus,
+        //   isSubmitting,
+        // }
+      ) => {
+        console.log('formik: ', formik);
+        // console.log('touched', touched);
+        // console.log('initialStatus', initialStatus);
+        // console.log('isSubmitting', isSubmitting);
+        return (
+          <Form>
+            <div className={styles.card}>
+              <input
+                ref={ref}
+                type="text"
+                name="title"
+                defaultValue={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
 
-            <textarea
-              ref={ref}
-              type="textarea"
-              name="description"
-              defaultValue={values.description}
-              onChange={handleChange}
-            />
-            <div>Created/Updated: {date}</div>
-            <button
-              onClick={() => handleUpdate(id)}
-              disabled={
-                (isSelectedIdea && isTitleActive) ||
-                (isSelectedIdea && isDescriptionActive)
-                  ? false
-                  : true
-              }>
-              Save
-            </button>
-            <button
-              onClick={handleCancel}
-              disabled={
-                (isSelectedIdea && isTitleActive) ||
-                (isSelectedIdea && isDescriptionActive)
-                  ? false
-                  : true
-              }>
-              Cancel
-            </button>
-            <button onClick={() => handleDelete(id)}>Delete</button>
-          </div>
-          <pre>{JSON.stringify(values, null, 2)}</pre>
-        </Form>
-      )}
+              <textarea
+                ref={ref}
+                type="textarea"
+                name="description"
+                defaultValue={formik.values.description}
+                onChange={formik.handleChange}
+              />
+              <div>Created/Updated: {date}</div>
+              <button
+                onClick={() => handleUpdate(id)}
+                disabled={formik.dirty ? false : true}>
+                Save
+              </button>
+              <button
+                onClick={handleCancel}
+                disabled={formik.dirty ? false : true}>
+                Cancel
+              </button>
+              <button onClick={() => handleDelete(id)}>Delete</button>
+            </div>
+            <pre>{JSON.stringify(formik.values, null, 2)}</pre>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
