@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Formik, Form } from 'formik';
 
-const TheForm = ({ handleSubmit }) => {
+const TheForm = ({ handleSubmit, inputRef }) => {
   return (
     <div>
       <Formik
@@ -20,6 +20,7 @@ const TheForm = ({ handleSubmit }) => {
             <label htmlFor="title">Title</label>
             <br />
             <input
+              ref={inputRef}
               required
               type="text"
               name="title"
@@ -46,5 +47,9 @@ const TheForm = ({ handleSubmit }) => {
     </div>
   );
 };
+
+// const ForwardedForm = React.forwardRef(TheForm);
+
+// export default ForwardedForm;
 
 export default TheForm;

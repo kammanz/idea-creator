@@ -1,33 +1,13 @@
 import React from 'react';
-import { Formik, Form, formik } from 'formik';
+import { Formik, Form } from 'formik';
 import styles from './Card.module.css';
 
-const Card = ({
-  selectedIdea,
-  selectedIdea: { isTitleActive, isDescriptionActive },
-  title,
-  description,
-  date,
-  id,
-  handleDelete,
-  handleUpdate,
-  handleActivateTitle,
-  isSelectedIdea,
-  handleTitleChange,
-  handleDescriptionChange,
-  handleActivateDescription,
-  // handleBlur,
-  handleCancel,
-  handleSubmit,
-}) => {
-  let inheritedTitle = title;
-  let inheritedDescription = description;
-  console.log('inheritedTitle: ', inheritedTitle);
+const Card = ({ title, description, date, id, handleDelete, handleUpdate }) => {
   return (
     <Formik
-      initialValues={{ title: title, description: description, id: id }}
+      initialValues={{ title, description, id }}
       enableReinitialize
-      onSubmit={(values, formik, actions) => {
+      onSubmit={(values) => {
         handleUpdate(values);
       }}>
       {(formik) => {
@@ -36,7 +16,6 @@ const Card = ({
           <Form>
             <div className={styles.card}>
               <input
-                // ref={ref}
                 type="text"
                 name="title"
                 value={formik.values.title}
@@ -45,7 +24,6 @@ const Card = ({
               />
               <br />
               <textarea
-                // ref={ref}
                 type="textarea"
                 name="description"
                 value={formik.values.description}
@@ -62,8 +40,8 @@ const Card = ({
             </div>
             <pre style={{ backgroundColor: 'lightpink' }}>
               <p>Inherited array</p>
-              <p>title: {inheritedTitle}</p>
-              <p>description: {inheritedDescription}</p>
+              <p>title: {title}</p>
+              <p>description: {description}</p>
             </pre>
             <pre style={{ backgroundColor: 'lightyellow' }}>
               <p>Current card</p>
@@ -75,7 +53,5 @@ const Card = ({
     </Formik>
   );
 };
-
-// const ForwardedCard = React.forwardRef(Card);
 
 export default Card;
