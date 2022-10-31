@@ -1,58 +1,55 @@
 import React from 'react';
+import { Formik, Form } from 'formik';
 import styles from './Card.module.css';
 
-const Card = ({
-  selectedIdea,
-  selectedIdea: { isTitleActive, isDescriptionActive },
-  title,
-  description,
-  date,
-  id,
-  handleDelete,
-  handleUpdate,
-  handleActivateTitle,
-  isSelectedIdea,
-  handleTitleChange,
-  handleDescriptionChange,
-  handleActivateDescription,
-  handleBlur,
-}) => {
+const Card = ({ title, description, date, id, handleDelete, handleUpdate }) => {
   return (
-    <div className={styles.card}>
-      {isSelectedIdea && isTitleActive ? (
-        <input
-          type="text"
-          defaultValue={selectedIdea.title}
-          onChange={handleTitleChange}
-          onBlur={handleBlur}
-        />
-      ) : (
-        <div onClick={() => handleActivateTitle(id)}>title: {title}</div>
-      )}
-      {isSelectedIdea && isDescriptionActive ? (
-        <input
-          type="textarea"
-          defaultValue={selectedIdea.description}
-          onChange={handleDescriptionChange}
-        />
-      ) : (
-        <div onClick={() => handleActivateDescription(id)}>
-          Description: {description}
-        </div>
-      )}
-      <div>Created/Updated: {date}</div>
-      <button
-        onClick={() => handleUpdate(id)}
-        disabled={
-          (isSelectedIdea && isTitleActive) ||
-          (isSelectedIdea && isDescriptionActive)
-            ? false
-            : true
-        }>
-        Save
-      </button>
-      <button onClick={() => handleDelete(id)}>Delete</button>
-    </div>
+    <Formik
+      initialValues={{ title, description, id }}
+      enableReinitialize
+      onSubmit={(values) => {
+        handleUpdate(values);
+      }}>
+      {(formik) => {
+        return (
+          <Form>
+            <div className={styles.card}>
+              <input
+                type="text"
+                name="title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              <br />
+              <textarea
+                type="textarea"
+                name="description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+              />
+              <div>Created/Updated: {date}</div>
+              <button type="submit" disabled={formik.dirty ? false : true}>
+                Save
+              </button>
+              <button type="reset" disabled={formik.dirty ? false : true}>
+                Cancel
+              </button>
+              <button onClick={() => handleDelete(id)}>Delete</button>
+            </div>
+            <pre style={{ backgroundColor: 'lightpink' }}>
+              <p>Inherited array</p>
+              <p>title: {title}</p>
+              <p>description: {description}</p>
+            </pre>
+            <pre style={{ backgroundColor: 'lightyellow' }}>
+              <p>Current card</p>
+              {JSON.stringify(formik.values, null, 2)}
+            </pre>
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
 
