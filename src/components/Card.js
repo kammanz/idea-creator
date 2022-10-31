@@ -22,19 +22,16 @@ const Card = ({
 }) => {
   let inheritedTitle = title;
   let inheritedDescription = description;
-  console.log('');
+  console.log('inheritedTitle: ', inheritedTitle);
   return (
     <Formik
       initialValues={{ title: title, description: description, id: id }}
+      enableReinitialize
       onSubmit={(values, formik, actions) => {
         handleUpdate(values);
-        formik.resetForm({
-          title: formik.values.title,
-          description: formik.values.description,
-        });
       }}>
       {(formik) => {
-        console.log('formik.values: ', formik.values);
+        console.log('formik: ', formik);
         return (
           <Form>
             <div className={styles.card}>
@@ -42,7 +39,7 @@ const Card = ({
                 // ref={ref}
                 type="text"
                 name="title"
-                defaultValue={formik.values.title}
+                value={formik.values.title}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
@@ -51,23 +48,14 @@ const Card = ({
                 // ref={ref}
                 type="textarea"
                 name="description"
-                defaultValue={formik.values.description}
+                value={formik.values.description}
                 onChange={formik.handleChange}
               />
               <div>Created/Updated: {date}</div>
               <button type="submit" disabled={formik.dirty ? false : true}>
                 Save
               </button>
-              <button
-                // type="button"
-                type="submit"
-                onClick={() =>
-                  formik.resetForm({
-                    title: formik.values.title,
-                    description: formik.values.description,
-                  })
-                }
-                disabled={formik.dirty ? false : true}>
+              <button type="reset" disabled={formik.dirty ? false : true}>
                 Cancel
               </button>
               <button onClick={() => handleDelete(id)}>Delete</button>
