@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { Formik, Form } from 'formik';
 
 const TheForm = ({ handleSubmit, inputRef }) => {
@@ -30,7 +30,7 @@ const TheForm = ({ handleSubmit, inputRef }) => {
             <br />
             <label htmlFor="description">Description</label>
             <br />
-            <input
+            <textarea
               required
               type="textarea"
               name="description"
@@ -47,9 +47,5 @@ const TheForm = ({ handleSubmit, inputRef }) => {
     </div>
   );
 };
-
-// const ForwardedForm = React.forwardRef(TheForm);
-
-// export default ForwardedForm;
 
 export default TheForm;

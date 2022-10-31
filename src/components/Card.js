@@ -11,7 +11,6 @@ const Card = ({ title, description, date, id, handleDelete, handleUpdate }) => {
         handleUpdate(values);
       }}>
       {(formik) => {
-        console.log('formik: ', formik);
         return (
           <Form>
             <div className={styles.card}>
