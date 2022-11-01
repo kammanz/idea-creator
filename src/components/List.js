@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Card from './Card';
 import Form from './Form';
 
+import { sortByMostRecent, sortByOldest, sortByAlphabet } from '../services';
+
 const List = () => {
   const [ideas, setIdeas] = useState([]);
 
@@ -12,7 +14,7 @@ const List = () => {
   useEffect(() => {
     inputRef.current.focus();
     return;
-  }, [ideas]);
+  }, []);
 
   const handleSubmit = (values) => {
     const { title, description } = values;
@@ -54,10 +56,36 @@ const List = () => {
     setIdeas(updatedList);
   };
 
+  const handleSelectChange = (e) => {
+    switch (e.target.value) {
+      case 'newest':
+        let sortedArrayNew = [...ideas].sort(sortByMostRecent);
+        setIdeas(sortedArrayNew);
+        break;
+      case 'oldest':
+        let sortedArrayOld = [...ideas].sort(sortByOldest);
+        setIdeas(sortedArrayOld);
+        break;
+      case 'alphabetically':
+        const sortedArrayAlphabet = [...ideas].sort(sortByAlphabet);
+        setIdeas(sortedArrayAlphabet);
+        break;
+      default:
+    }
+  };
+
   return (
     <>
       <h4>Create an Idea</h4>
       <Form handleSubmit={handleSubmit} inputRef={inputRef} />
+      <h4>Sort list</h4>
+      <form>
+        <select onChange={handleSelectChange}>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="alphabetically">A - Z</option>
+        </select>
+      </form>
       <h4>List of Ideas</h4>
       {ideas &&
         ideas.map((idea, i) => {
