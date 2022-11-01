@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Card from './Card';
 import Form from './Form';
 
-import { newest, oldest, compare } from '../services';
+import { sortByMostRecent, sortByOldest, sortByAlphabet } from '../services';
 
 const List = () => {
   const [ideas, setIdeas] = useState([]);
@@ -57,41 +57,28 @@ const List = () => {
   };
 
   const handleSelectChange = (e) => {
-    console.log('select change ran');
     console.log('e.target.value: ', e.target.value);
-
-    if (e.target.value === 'newest') {
-      let sortedArrayNew = [...ideas].sort(newest);
-      console.log('sortedArrayNew: ', sortedArrayNew);
-      setIdeas(sortedArrayNew);
-    } else if (e.target.value === 'oldest') {
-      let sortedArrayOld = [...ideas].sort(oldest);
-      console.log('sortedArrayOld: ', sortedArrayOld);
-      setIdeas(sortedArrayOld);
+    switch (e.target.value) {
+      case 'newest':
+        console.log('newest');
+        let sortedArrayNew = [...ideas].sort(sortByMostRecent);
+        setIdeas(sortedArrayNew);
+        break;
+      case 'oldest':
+        console.log('oldest');
+        let sortedArrayOld = [...ideas].sort(sortByOldest);
+        setIdeas(sortedArrayOld);
+        break;
+      case 'alphabetically':
+        console.log('alphabetically');
+        const sortedArrayAlphabet = [...ideas].sort(sortByAlphabet);
+        console.log('sortedArrayAlphabet: ', sortedArrayAlphabet);
+        console.log('here 1');
+        setIdeas(sortedArrayAlphabet);
+        console.log('here 2');
+        break;
+      default:
     }
-
-    // let sortedArrayNew = [...ideas].sort(newest);
-    // console.log('sortedArrayNew: ', sortedArrayNew);
-    // setIdeas(sortedArrayNew);
-    // switch (e.target.value) {
-    //   case 'newest':
-    //     // code block
-    //     console.log('newest, ideas: ', ideas);
-    //     let sortedArrayNew = [...ideas].sort(newest);
-    //     console.log('sortedArrayNew: ', sortedArrayNew);
-    //     setIdeas(sortedArrayNew);
-    //     break;
-    //   case 'oldest':
-    //     // code block
-    //     // console.log('oldest, ideas: ', ideas);
-    //     let sortedArrayNew = [...ideas].sort(newest);
-    //     // let sortedArrayOld = [...ideas].sort(oldest);
-    //     console.log('sortedArrayOld: ', sortedArrayOld);
-    //     setIdeas(sortedArrayOld);
-    //     break;
-    //   default:
-    //   // code block
-    // }
   };
 
   return (
@@ -101,10 +88,9 @@ const List = () => {
       <h4>Sort list</h4>
       <form>
         <select onChange={handleSelectChange}>
-          <option value="newest">newest</option>
-          <option value="oldest">oldest</option>
-          {/* <option value="by-ascending-alphabet">by-ascending-alphabet</option>
-          <option value="by-descending-alphabet">by-descending-alphabet</option> */}
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="alphabetically">A - Z</option>
         </select>
       </form>
       <h4>List of Ideas</h4>

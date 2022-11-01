@@ -1,29 +1,32 @@
-export const newest = (a, b) => {
-  let dateA = a.dateNum;
-  console.log('a.dateNum: ', a.dateNum);
-  let dateB = b.dateNum;
-  console.log('b.dateNum: ', b.dateNum);
-  if (dateA < dateB) {
+// sort functions
+
+// by recent...
+export const sortByMostRecent = (a, b) => {
+  if (a.dateNum < b.dateNum) {
     return 1;
-  } else if (dateA > dateB) {
+  } else if (a.dateNum > b.dateNum) {
     return -1;
   } else {
     return 0;
   }
 };
 
-export const compare = (a, b) => {
-  return a.dateNum - b.dateNum;
+// by oldest...
+export const sortByOldest = (a, b) => {
+  if (a.dateNum > b.dateNum) {
+    return 1;
+  } else if (a.dateNum < b.dateNum) {
+    return -1;
+  } else {
+    return 0;
+  }
 };
 
-export const oldest = (a, b) => {
-  let dateA = a.dateNum;
-  console.log('a.dateNum: ', a.dateNum);
-  let dateB = b.dateNum;
-  console.log('b.dateNum: ', b.dateNum);
-  if (dateA > dateB) {
+// by alphabet...
+export const sortByAlphabet = (a, b) => {
+  if (a.title.charAt(0) > b.title.charAt(0)) {
     return 1;
-  } else if (dateA < dateB) {
+  } else if (a.title.charAt(0) < b.title.charAt(0)) {
     return -1;
   } else {
     return 0;
