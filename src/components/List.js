@@ -57,25 +57,18 @@ const List = () => {
   };
 
   const handleSelectChange = (e) => {
-    console.log('e.target.value: ', e.target.value);
     switch (e.target.value) {
       case 'newest':
-        console.log('newest');
         let sortedArrayNew = [...ideas].sort(sortByMostRecent);
         setIdeas(sortedArrayNew);
         break;
       case 'oldest':
-        console.log('oldest');
         let sortedArrayOld = [...ideas].sort(sortByOldest);
         setIdeas(sortedArrayOld);
         break;
       case 'alphabetically':
-        console.log('alphabetically');
         const sortedArrayAlphabet = [...ideas].sort(sortByAlphabet);
-        console.log('sortedArrayAlphabet: ', sortedArrayAlphabet);
-        console.log('here 1');
         setIdeas(sortedArrayAlphabet);
-        console.log('here 2');
         break;
       default:
     }

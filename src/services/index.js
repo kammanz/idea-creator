@@ -24,9 +24,11 @@ export const sortByOldest = (a, b) => {
 
 // by alphabet...
 export const sortByAlphabet = (a, b) => {
-  if (a.title.charAt(0) > b.title.charAt(0)) {
+  const A = a.title.toLowerCase();
+  const B = b.title.toLowerCase();
+  if (A > B) {
     return 1;
-  } else if (a.title.charAt(0) < b.title.charAt(0)) {
+  } else if (A < B) {
     return -1;
   } else {
     return 0;
