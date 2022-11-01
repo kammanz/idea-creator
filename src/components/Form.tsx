@@ -1,30 +1,32 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
+import { Stuff } from './List';
 
-const TheForm = ({ handleSubmit, inputRef }) => {
+type Props = {
+  form: Stuff;
+};
+
+const TheForm: React.FC<Props> = ({ form }) => {
   return (
     <div>
       <Formik
         initialValues={{ title: '', description: '' }}
         onSubmit={(values, actions) => {
-          handleSubmit(values);
+          form.handleSubmit(values);
           actions.resetForm({
-            values: {
-              title: '',
-              description: '',
-            },
+            values: { title: '', description: '' },
           });
         }}>
-        {({ values, handleChange }) => (
+        {({ values: { title, description }, handleChange }) => (
           <Form>
             <label htmlFor="title">Title</label>
             <br />
             <input
-              ref={inputRef}
+              ref={form.inputRef}
               required
               type="text"
               name="title"
-              value={values.title}
+              value={title}
               onChange={handleChange}
             />
             <br />
@@ -33,15 +35,13 @@ const TheForm = ({ handleSubmit, inputRef }) => {
             <textarea
               maxLength={140}
               required
-              type="textarea"
               name="description"
-              value={values.description}
+              value={description}
               onChange={handleChange}
             />
             <br />
             <br />
             <button type="submit">Add idea</button>
-            <pre>{JSON.stringify(values, null, 2)}</pre>
           </Form>
         )}
       </Formik>

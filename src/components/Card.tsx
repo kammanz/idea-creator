@@ -1,14 +1,23 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import styles from './Card.module.css';
+import { Idea } from './List';
 
-const Card = ({ title, description, date, id, handleDelete, handleUpdate }) => {
+interface Props {
+  card: Idea;
+}
+
+const Card: React.FC<Props> = ({ card }) => {
   return (
     <Formik
-      initialValues={{ title, description, id }}
+      initialValues={{
+        title: card.title,
+        description: card.description,
+        id: card.id,
+      }}
       enableReinitialize
       onSubmit={(values) => {
-        handleUpdate(values);
+        card.handleUpdate(values);
       }}>
       {(formik) => {
         return (
@@ -24,24 +33,23 @@ const Card = ({ title, description, date, id, handleDelete, handleUpdate }) => {
               <br />
               <textarea
                 maxLength={140}
-                type="textarea"
                 name="description"
                 value={formik.values.description}
                 onChange={formik.handleChange}
               />
-              <div>Created/Updated: {date}</div>
+              <div>Created/Updated: {card.dateString}</div>
               <button type="submit" disabled={formik.dirty ? false : true}>
                 Save
               </button>
               <button type="reset" disabled={formik.dirty ? false : true}>
                 Cancel
               </button>
-              <button onClick={() => handleDelete(id)}>Delete</button>
+              <button onClick={() => card.handleDelete(card.id)}>Delete</button>
             </div>
             <pre style={{ backgroundColor: 'lightpink' }}>
               <p>Inherited array</p>
-              <p>title: {title}</p>
-              <p>description: {description}</p>
+              <p>title: {card.title}</p>
+              <p>description: {card.description}</p>
             </pre>
             <pre style={{ backgroundColor: 'lightyellow' }}>
               <p>Current card</p>
