@@ -5,6 +5,7 @@ import Card from './Card';
 import Form from './Form';
 
 import { sortByMostRecent, sortByOldest, sortByAlphabet } from '../services';
+import { SELECT_VALUES } from '../enums';
 
 export interface Idea {
   id: number;
@@ -75,15 +76,15 @@ const List = () => {
 
   const handleSelectChange = (e) => {
     switch (e.target.value) {
-      case 'newest':
+      case SELECT_VALUES.NEWEST:
         const sortedArrayNew = [...ideas].sort(sortByMostRecent);
         setIdeas(sortedArrayNew);
         break;
-      case 'oldest':
+      case SELECT_VALUES.OLDEST:
         const sortedArrayOld = [...ideas].sort(sortByOldest);
         setIdeas(sortedArrayOld);
         break;
-      case 'alphabetically':
+      case SELECT_VALUES.APHABETICALLY:
         const sortedArrayAlphabet = [...ideas].sort(sortByAlphabet);
         setIdeas(sortedArrayAlphabet);
         break;
@@ -104,9 +105,9 @@ const List = () => {
       <h4>Sort list</h4>
       <form>
         <select onChange={handleSelectChange}>
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="alphabetically">A - Z</option>
+          <option value={SELECT_VALUES.NEWEST}>Newest</option>
+          <option value={SELECT_VALUES.OLDEST}>Oldest</option>
+          <option value={SELECT_VALUES.APHABETICALLY}>A - Z</option>
         </select>
       </form>
       <h4>List of Ideas</h4>
