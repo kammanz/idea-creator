@@ -14,6 +14,12 @@ List Sorting:
 
 Conditional sort functionality based on whether there are more than 2 items in the list
 
+In version 2, I'd add a feature that allows the user to distinguish between searching by 'date created' and 'date updated.'
+
 Cursor Focus:
 
-As per instructions, cursor is focussed on new idea field on page load, and after new idea creation. However, after a user updates an idea, I would not have any focus, as that would make the page scroll back to top. The user may want to look at their idea read the description, and a page scroll to top would be distracting.
+Cursor focusses on the new idea field after the page loads and after a new idea is created (as per instructions). However, after a user updates an idea, I've removed this functionality, which would make the page scroll back to top while the user is potentially reading their idea's description.
+
+Accessibility:
+
+A current labeling convention sets the input titles as placeholders. I've used the older of method of using label tags, as it's easier to navigate for accessibility users.
