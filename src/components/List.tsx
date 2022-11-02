@@ -7,6 +7,8 @@ import Form from './Form';
 import { sortByMostRecent, sortByOldest, sortByAlphabet } from '../services';
 import { SELECT_VALUES } from '../enums';
 
+('use strict');
+
 export interface Idea {
   id: number;
   title: string;
@@ -55,8 +57,8 @@ const List = () => {
     let date = new Date();
     let dateNum = date.getTime();
     let dateString = date.toLocaleString();
-    let updatedList: Idea[] = [
-      ...ideas.map((idea: Idea) => {
+    let updatedList = [
+      ...ideas.map((idea) => {
         return idea.id === updatedIdea.id
           ? {
               ...idea,
@@ -111,7 +113,7 @@ const List = () => {
       <h4>List of Ideas</h4>
       {ideas &&
         ideas.map((idea) => {
-          const { title, description, id, dateString, dateNum } = idea;
+          const { title, description, id, dateString } = idea;
           return (
             <Card
               key={id}
@@ -119,7 +121,6 @@ const List = () => {
                 id: id,
                 title: title,
                 description: description,
-                dateNum: dateNum,
                 dateString: dateString,
               }}
               handleDelete={handleDelete}

@@ -14,7 +14,7 @@
     "scanner.ts",
     "parser.ts",
     "utilities.ts",
-    "binder.ts",
+    // "binder.ts",
     "checker.ts",
     "emitter.ts",
     "program.ts",

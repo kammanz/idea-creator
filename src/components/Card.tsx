@@ -61,7 +61,7 @@ const Card: React.FC<Props> = ({ card, handleUpdate, handleDelete }) => {
             </pre>
             <pre style={{ backgroundColor: 'lightyellow' }}>
               <p>Current card</p>
-              {JSON.stringify(values, null, 2)}
+              {JSON.stringify({ values }, null, 2)}
             </pre>
           </Form>
         );
