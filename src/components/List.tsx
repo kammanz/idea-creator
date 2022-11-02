@@ -7,30 +7,23 @@ import Form from './Form';
 import { sortByMostRecent, sortByOldest, sortByAlphabet } from '../services';
 import { SELECT_VALUES } from '../enums';
 
-('use strict');
-
 export interface Idea {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   dateNum?: number;
   dateString?: string;
 }
 
-export interface InitialIdea {
-  handleSubmit: any;
-  inputRef: any;
-}
-
 const List = () => {
   const [ideas, setIdeas] = useState<Idea[]>([]);
 
-  let inputRef = React.useRef<HTMLDivElement>(null);
+  let inputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef?.current?.focus();
     return;
-  }, []);
+  }, [ideas]);
 
   const handleSubmit = (idea: Idea) => {
     const { title, description } = idea;
@@ -93,15 +86,10 @@ const List = () => {
     }
   };
 
-  let InitialIdea: InitialIdea = {
-    handleSubmit,
-    inputRef,
-  };
-
   return (
     <>
       <h4>Create an Idea</h4>
-      <Form form={InitialIdea} />
+      <Form handleSubmit={handleSubmit} inputRef={inputRef} />
       <h4>Sort list</h4>
       <form>
         <select onChange={handleSelectChange}>
