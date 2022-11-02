@@ -1,9 +1,9 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Stuff } from './List';
+import { InitialIdea } from './List';
 
 type Props = {
-  form: Stuff;
+  form: InitialIdea;
 };
 
 const TheForm: React.FC<Props> = ({ form }) => {

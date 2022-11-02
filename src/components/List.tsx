@@ -16,7 +16,7 @@ export interface Idea {
   handleUpdate?: any;
 }
 
-export interface Stuff {
+export interface InitialIdea {
   handleSubmit: any;
   inputRef: any;
 }
@@ -92,7 +92,7 @@ const List = () => {
     }
   };
 
-  let jojo: Stuff = {
+  let InitialIdea: InitialIdea = {
     handleSubmit,
     inputRef,
   };
@@ -100,7 +100,7 @@ const List = () => {
   return (
     <>
       <h4>Create an Idea</h4>
-      <Form form={jojo} />
+      <Form form={InitialIdea} />
       <h4>Sort list</h4>
       <form>
         <select onChange={handleSelectChange}>
