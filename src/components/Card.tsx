@@ -5,9 +5,11 @@ import { Idea } from './List';
 
 interface Props {
   card: Idea;
+  handleUpdate: (param: Idea) => void;
+  handleDelete: (param: number) => void;
 }
 
-const Card: React.FC<Props> = ({ card }) => {
+const Card: React.FC<Props> = ({ card, handleUpdate, handleDelete }) => {
   return (
     <Formik
       initialValues={{
@@ -17,34 +19,40 @@ const Card: React.FC<Props> = ({ card }) => {
       }}
       enableReinitialize
       onSubmit={(values) => {
-        card.handleUpdate(values);
+        handleUpdate(values);
       }}>
-      {(formik) => {
+      {({
+        values,
+        values: { title, description },
+        dirty,
+        handleChange,
+        handleBlur,
+      }) => {
         return (
           <Form>
             <div className={styles.card}>
               <input
                 type="text"
                 name="title"
-                value={formik.values.title}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                value={title}
+                onChange={handleChange}
+                onBlur={handleBlur}
               />
               <br />
               <textarea
                 maxLength={140}
                 name="description"
-                value={formik.values.description}
-                onChange={formik.handleChange}
+                value={description}
+                onChange={handleChange}
               />
               <div>Created/Updated: {card.dateString}</div>
-              <button type="submit" disabled={formik.dirty ? false : true}>
+              <button type="submit" disabled={dirty ? false : true}>
                 Save
               </button>
-              <button type="reset" disabled={formik.dirty ? false : true}>
+              <button type="reset" disabled={dirty ? false : true}>
                 Cancel
               </button>
-              <button onClick={() => card.handleDelete(card.id)}>Delete</button>
+              <button onClick={() => handleDelete(card.id)}>Delete</button>
             </div>
             <pre style={{ backgroundColor: 'lightpink' }}>
               <p>Inherited array</p>
@@ -53,7 +61,7 @@ const Card: React.FC<Props> = ({ card }) => {
             </pre>
             <pre style={{ backgroundColor: 'lightyellow' }}>
               <p>Current card</p>
-              {JSON.stringify(formik.values, null, 2)}
+              {JSON.stringify(values, null, 2)}
             </pre>
           </Form>
         );

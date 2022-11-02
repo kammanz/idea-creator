@@ -12,9 +12,7 @@ export interface Idea {
   title: string;
   description: string;
   dateNum?: number;
-  dateString: string;
-  handleDelete?: any;
-  handleUpdate?: any;
+  dateString?: string;
 }
 
 export interface InitialIdea {
@@ -49,7 +47,7 @@ const List = () => {
   };
 
   const handleDelete = (id: number) => {
-    let filteredList = [...ideas].filter((idea: Idea) => idea.id !== id);
+    let filteredList = [...ideas].filter((idea) => idea.id !== id);
     setIdeas(filteredList);
   };
 
@@ -112,28 +110,21 @@ const List = () => {
       </form>
       <h4>List of Ideas</h4>
       {ideas &&
-        ideas.map((idea, i) => {
-          const { title, description, id, dateString } = idea;
-          let newObj: Idea = {
-            id,
-            title,
-            description,
-            dateString,
-            handleDelete,
-            handleUpdate,
-          };
+        ideas.map((idea) => {
+          const { title, description, id, dateString, dateNum } = idea;
           return (
-            <div key={i}>
-              <Card
-                card={newObj}
-                // id={id}
-                // title={title}
-                // description={description}
-                // dateString={dateString}
-                // handleDelete={handleDelete}
-                // handleUpdate={handleUpdate}
-              />
-            </div>
+            <Card
+              key={id}
+              card={{
+                id: id,
+                title: title,
+                description: description,
+                dateNum: dateNum,
+                dateString: dateString,
+              }}
+              handleDelete={handleDelete}
+              handleUpdate={handleUpdate}
+            />
           );
         })}
     </>
