@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Card from './Card';
 import Form from './Form';
 
-import { sortByMostRecent, sortByOldest, sortByAlphabet } from '../services';
+import { sortByProperty } from '../services';
 import { SELECT_VALUES } from '../enums';
 
 export interface Idea {
@@ -23,7 +23,7 @@ const List = () => {
   useEffect(() => {
     inputRef?.current?.focus();
     return;
-  }, [ideas]);
+  }, []);
 
   const handleSubmit = (idea: Idea) => {
     const { title, description } = idea;
@@ -67,19 +67,19 @@ const List = () => {
     setIdeas(updatedList);
   };
 
-  const handleSelectChange = (e) => {
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     switch (e.target.value) {
       case SELECT_VALUES.NEWEST:
-        const sortedArrayNew = [...ideas].sort(sortByMostRecent);
-        setIdeas(sortedArrayNew);
+        const sortedByNew = sortByProperty([...ideas], 'dateNum', true);
+        setIdeas(sortedByNew);
         break;
       case SELECT_VALUES.OLDEST:
-        const sortedArrayOld = [...ideas].sort(sortByOldest);
-        setIdeas(sortedArrayOld);
+        const sortedByOld = sortByProperty([...ideas], 'dateNum', false);
+        setIdeas(sortedByOld);
         break;
       case SELECT_VALUES.APHABETICALLY:
-        const sortedArrayAlphabet = [...ideas].sort(sortByAlphabet);
-        setIdeas(sortedArrayAlphabet);
+        const sortedByAlpha = sortByProperty([...ideas], 'title', false);
+        setIdeas(sortedByAlpha);
         break;
       default:
         throw 'invalid select value';
