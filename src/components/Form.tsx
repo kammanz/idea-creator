@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { LegacyRef } from 'react';
 import { Formik, Form } from 'formik';
-import { InitialIdea } from './List';
+import { Idea } from './List';
 
 type Props = {
-  form: InitialIdea;
+  handleSubmit: (param: Idea) => void;
+  inputRef: LegacyRef<HTMLInputElement>;
 };
 
-const TheForm: React.FC<Props> = ({ form }) => {
+const TheForm: React.FC<Props> = ({ handleSubmit, inputRef }) => {
   return (
     <div>
       <Formik
         initialValues={{ title: '', description: '' }}
         onSubmit={(values, actions) => {
-          form.handleSubmit(values);
+          handleSubmit(values);
           actions.resetForm({
             values: { title: '', description: '' },
           });
@@ -22,7 +23,7 @@ const TheForm: React.FC<Props> = ({ form }) => {
             <label htmlFor="title">Title</label>
             <br />
             <input
-              ref={form.inputRef}
+              ref={inputRef}
               required
               type="text"
               name="title"

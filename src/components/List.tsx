@@ -4,31 +4,24 @@ import { useState, useEffect } from 'react';
 import Card from './Card';
 import Form from './Form';
 
-import { sortByMostRecent, sortByOldest, sortByAlphabet } from '../services';
+import { sortByProperty } from '../services';
 import { SELECT_VALUES } from '../enums';
 
 export interface Idea {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   dateNum?: number;
-  dateString: string;
-  handleDelete?: any;
-  handleUpdate?: any;
-}
-
-export interface InitialIdea {
-  handleSubmit: any;
-  inputRef: any;
+  dateString?: string;
 }
 
 const List = () => {
   const [ideas, setIdeas] = useState<Idea[]>([]);
 
-  let inputRef = React.useRef<HTMLDivElement>(null);
+  let inputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef?.current?.focus();
     return;
   }, []);
 
@@ -49,7 +42,7 @@ const List = () => {
   };
 
   const handleDelete = (id: number) => {
-    let filteredList = [...ideas].filter((idea: Idea) => idea.id !== id);
+    let filteredList = [...ideas].filter((idea) => idea.id !== id);
     setIdeas(filteredList);
   };
 
@@ -57,8 +50,8 @@ const List = () => {
     let date = new Date();
     let dateNum = date.getTime();
     let dateString = date.toLocaleString();
-    let updatedList: Idea[] = [
-      ...ideas.map((idea: Idea) => {
+    let updatedList = [
+      ...ideas.map((idea) => {
         return idea.id === updatedIdea.id
           ? {
               ...idea,
@@ -74,34 +67,29 @@ const List = () => {
     setIdeas(updatedList);
   };
 
-  const handleSelectChange = (e) => {
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     switch (e.target.value) {
       case SELECT_VALUES.NEWEST:
-        const sortedArrayNew = [...ideas].sort(sortByMostRecent);
-        setIdeas(sortedArrayNew);
+        const sortedByNew = sortByProperty([...ideas], 'dateNum', true);
+        setIdeas(sortedByNew);
         break;
       case SELECT_VALUES.OLDEST:
-        const sortedArrayOld = [...ideas].sort(sortByOldest);
-        setIdeas(sortedArrayOld);
+        const sortedByOld = sortByProperty([...ideas], 'dateNum', false);
+        setIdeas(sortedByOld);
         break;
       case SELECT_VALUES.APHABETICALLY:
-        const sortedArrayAlphabet = [...ideas].sort(sortByAlphabet);
-        setIdeas(sortedArrayAlphabet);
+        const sortedByAlpha = sortByProperty([...ideas], 'title', false);
+        setIdeas(sortedByAlpha);
         break;
       default:
         throw 'invalid select value';
     }
   };
 
-  let InitialIdea: InitialIdea = {
-    handleSubmit,
-    inputRef,
-  };
-
   return (
     <>
       <h4>Create an Idea</h4>
-      <Form form={InitialIdea} />
+      <Form handleSubmit={handleSubmit} inputRef={inputRef} />
       <h4>Sort list</h4>
       <form>
         <select onChange={handleSelectChange}>
@@ -112,28 +100,20 @@ const List = () => {
       </form>
       <h4>List of Ideas</h4>
       {ideas &&
-        ideas.map((idea, i) => {
+        ideas.map((idea) => {
           const { title, description, id, dateString } = idea;
-          let newObj: Idea = {
-            id,
-            title,
-            description,
-            dateString,
-            handleDelete,
-            handleUpdate,
-          };
           return (
-            <div key={i}>
-              <Card
-                card={newObj}
-                // id={id}
-                // title={title}
-                // description={description}
-                // dateString={dateString}
-                // handleDelete={handleDelete}
-                // handleUpdate={handleUpdate}
-              />
-            </div>
+            <Card
+              key={id}
+              card={{
+                id: id,
+                title: title,
+                description: description,
+                dateString: dateString,
+              }}
+              handleDelete={handleDelete}
+              handleUpdate={handleUpdate}
+            />
           );
         })}
     </>
