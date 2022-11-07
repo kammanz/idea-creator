@@ -7,3 +7,11 @@
   border-radius: 5px;
   background-color: lightgrey;
 }
+
+.card textarea {
+  margin-bottom: 20px;
+}
+
+.cardDate {
+  font-size: 11px;
+}
