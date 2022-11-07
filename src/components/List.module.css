@@ -1,0 +1,24 @@
+.appContainer {
+  display: flex;
+}
+
+.formContainer {
+}
+
+.galleryContainer {
+  padding: 20px;
+}
+
+.galleryContainer h4 {
+  margin-top: 0px;
+}
+
+.listContainer2 {
+  display: flex;
+  flex-wrap: wrap;
+  /* background-color: pink; */
+}
+
+.listContainer form {
+  /* margin: 4px; */
+}

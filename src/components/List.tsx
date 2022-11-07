@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 import Card from './Card';
 import Form from './Form';
+import styles from './List.module.css';
 
 import { sortByProperty } from '../services';
 import { SELECT_VALUES } from '../enums';
@@ -87,36 +88,42 @@ const List = () => {
   };
 
   return (
-    <>
-      <h4>Create an Idea</h4>
-      <Form handleSubmit={handleSubmit} inputRef={inputRef} />
-      <h4>Sort list</h4>
-      <form>
-        <select onChange={handleSelectChange}>
-          <option value={SELECT_VALUES.NEWEST}>Newest</option>
-          <option value={SELECT_VALUES.OLDEST}>Oldest</option>
-          <option value={SELECT_VALUES.APHABETICALLY}>A - Z</option>
-        </select>
-      </form>
-      <h4>List of Ideas</h4>
-      {ideas &&
-        ideas.map((idea) => {
-          const { title, description, id, dateString } = idea;
-          return (
-            <Card
-              key={id}
-              card={{
-                id: id,
-                title: title,
-                description: description,
-                dateString: dateString,
-              }}
-              handleDelete={handleDelete}
-              handleUpdate={handleUpdate}
-            />
-          );
-        })}
-    </>
+    <div className={styles.appContainer}>
+      <div className={styles.formContainer}>
+        <h4>Create an Idea</h4>
+        <Form handleSubmit={handleSubmit} inputRef={inputRef} />
+        <h4>Sort list</h4>
+        <form>
+          <select onChange={handleSelectChange}>
+            <option value={SELECT_VALUES.NEWEST}>Newest</option>
+            <option value={SELECT_VALUES.OLDEST}>Oldest</option>
+            <option value={SELECT_VALUES.APHABETICALLY}>A - Z</option>
+          </select>
+        </form>
+      </div>
+      <div className={styles.galleryContainer}>
+        <h4>List of Ideas</h4>
+        <div className={styles.listContainer2}>
+          {ideas &&
+            ideas.map((idea) => {
+              const { title, description, id, dateString } = idea;
+              return (
+                <Card
+                  key={id}
+                  card={{
+                    id: id,
+                    title: title,
+                    description: description,
+                    dateString: dateString,
+                  }}
+                  handleDelete={handleDelete}
+                  handleUpdate={handleUpdate}
+                />
+              );
+            })}
+        </div>
+      </div>
+    </div>
   );
 };
 

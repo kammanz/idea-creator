@@ -22,7 +22,6 @@ const Card: React.FC<Props> = ({ card, handleUpdate, handleDelete }) => {
         handleUpdate(values);
       }}>
       {({
-        values,
         values: { title, description },
         dirty,
         handleChange,
@@ -50,13 +49,15 @@ const Card: React.FC<Props> = ({ card, handleUpdate, handleDelete }) => {
               <div className={styles.cardDate}>
                 Created/Updated: {card.dateString}
               </div>
-              {dirty && (
-                <>
-                  <button type="submit">Save</button>
-                  <button type="reset">Cancel</button>
-                </>
-              )}
-              <button onClick={() => handleDelete(card.id)}>Delete</button>
+              <div className={styles.buttonContainer}>
+                {dirty && (
+                  <>
+                    <button type="submit">Save</button>
+                    <button type="reset">Cancel</button>
+                  </>
+                )}
+                <button onClick={() => handleDelete(card.id)}>Delete</button>
+              </div>
             </div>
           </Form>
         );
