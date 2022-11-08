@@ -22,7 +22,6 @@ const Card: React.FC<Props> = ({ card, handleUpdate, handleDelete }) => {
         handleUpdate(values);
       }}>
       {({
-        values,
         values: { title, description },
         dirty,
         handleChange,
@@ -31,6 +30,7 @@ const Card: React.FC<Props> = ({ card, handleUpdate, handleDelete }) => {
         return (
           <Form>
             <div className={styles.card}>
+              <label htmlFor="text">Title</label>
               <input
                 type="text"
                 name="title"
@@ -39,30 +39,26 @@ const Card: React.FC<Props> = ({ card, handleUpdate, handleDelete }) => {
                 onBlur={handleBlur}
               />
               <br />
+              <label htmlFor="description">Description</label>
               <textarea
                 maxLength={140}
                 name="description"
                 value={description}
                 onChange={handleChange}
               />
-              <div>Created/Updated: {card.dateString}</div>
-              <button type="submit" disabled={dirty ? false : true}>
-                Save
-              </button>
-              <button type="reset" disabled={dirty ? false : true}>
-                Cancel
-              </button>
-              <button onClick={() => handleDelete(card.id)}>Delete</button>
+              <div className={styles.cardDate}>
+                Created/Updated: {card.dateString}
+              </div>
+              <div className={styles.buttonContainer}>
+                {dirty && (
+                  <>
+                    <button type="submit">Save</button>
+                    <button type="reset">Cancel</button>
+                  </>
+                )}
+                <button onClick={() => handleDelete(card.id)}>Delete</button>
+              </div>
             </div>
-            <pre style={{ backgroundColor: 'lightpink' }}>
-              <p>Inherited array</p>
-              <p>title: {card.title}</p>
-              <p>description: {card.description}</p>
-            </pre>
-            <pre style={{ backgroundColor: 'lightyellow' }}>
-              <p>Current card</p>
-              {JSON.stringify({ values }, null, 2)}
-            </pre>
           </Form>
         );
       }}
