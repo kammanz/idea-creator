@@ -2,9 +2,6 @@
   display: flex;
 }
 
-.formContainer {
-}
-
 .galleryContainer {
   padding: 20px;
 }
@@ -13,12 +10,21 @@
   margin-top: 0px;
 }
 
-.listContainer2 {
+.listContainer {
   display: flex;
   flex-wrap: wrap;
-  /* background-color: pink; */
 }
 
-.listContainer form {
-  /* margin: 4px; */
+@media only screen and (max-width: 800px) {
+  .appContainer {
+    flex-direction: column;
+  }
+
+  .galleryContainer {
+    padding-left: 0px;
+  }
+
+  .listContainer {
+    flex-direction: column;
+  }
 }

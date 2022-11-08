@@ -103,7 +103,7 @@ const List = () => {
       </div>
       <div className={styles.galleryContainer}>
         <h4>List of Ideas</h4>
-        <div className={styles.listContainer2}>
+        <div className={styles.listContainer}>
           {ideas &&
             ideas.map((idea) => {
               const { title, description, id, dateString } = idea;
