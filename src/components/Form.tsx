@@ -1,6 +1,7 @@
 import React, { LegacyRef } from 'react';
 import { Formik, Form } from 'formik';
 import { Idea } from './List';
+import styles from './Form.module.css';
 
 type Props = {
   handleSubmit: (param: Idea) => void;
@@ -19,9 +20,8 @@ const TheForm: React.FC<Props> = ({ handleSubmit, inputRef }) => {
           });
         }}>
         {({ values: { title, description }, handleChange }) => (
-          <Form>
+          <Form className={styles.form}>
             <label htmlFor="title">Title</label>
-            <br />
             <input
               ref={inputRef}
               required
@@ -30,9 +30,7 @@ const TheForm: React.FC<Props> = ({ handleSubmit, inputRef }) => {
               value={title}
               onChange={handleChange}
             />
-            <br />
             <label htmlFor="description">Description</label>
-            <br />
             <textarea
               maxLength={140}
               required
@@ -40,8 +38,6 @@ const TheForm: React.FC<Props> = ({ handleSubmit, inputRef }) => {
               value={description}
               onChange={handleChange}
             />
-            <br />
-            <br />
             <button type="submit">Add idea</button>
           </Form>
         )}

@@ -1,3 +1,8 @@
+body {
+  height: 100vh;
+  background-color: rgb(235, 246, 250);
+}
+
 .App {
   text-align: center;
 }
@@ -30,7 +35,6 @@
 
 .container {
   padding: 20px;
-  background-color: rgb(235, 246, 250);
 }
 
 @keyframes App-logo-spin {
