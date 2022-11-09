@@ -17,24 +17,30 @@ export interface Idea {
 }
 
 const List = () => {
-  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [ideas, setIdeas] = useState<Idea[]>(() => {
+    const currentIdeas: string = localStorage.getItem('ideas');
+    return currentIdeas ? JSON.parse(currentIdeas) : [];
+  });
 
   let inputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     inputRef?.current?.focus();
+    localStorage.setItem('ideas', JSON.stringify([...ideas]));
     return;
-  }, []);
+  }, [ideas]);
 
   const handleSubmit = (idea: Idea) => {
     const { title, description } = idea;
     let date = new Date();
     let dateNum = date.getTime();
     let dateString = date.toLocaleString();
+    const firstChar = title.charAt(0).toUpperCase();
+    const restOfString = title.substr(1);
 
     let newIdea: Idea = {
       id: Math.floor(Math.random() * 1000),
-      title,
+      title: `${firstChar}${restOfString}`,
       description,
       dateNum,
       dateString,
@@ -92,7 +98,7 @@ const List = () => {
       <div className={styles.formContainer}>
         <h4>Create an Idea</h4>
         <Form handleSubmit={handleSubmit} inputRef={inputRef} />
-        <h4>Sort list</h4>
+        <h4>Sort By:</h4>
         <form>
           <select onChange={handleSelectChange}>
             <option value={SELECT_VALUES.NEWEST}>Newest</option>
@@ -102,7 +108,7 @@ const List = () => {
         </form>
       </div>
       <div className={styles.galleryContainer}>
-        <h4>List of Ideas</h4>
+        <h4> {ideas.length > 0 ? 'List of Ideas' : 'No Ideas Yet'}</h4>
         <div className={styles.listContainer}>
           {ideas &&
             ideas.map((idea) => {

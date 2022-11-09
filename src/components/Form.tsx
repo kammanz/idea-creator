@@ -23,6 +23,7 @@ const TheForm: React.FC<Props> = ({ handleSubmit, inputRef }) => {
           <Form className={styles.form}>
             <label htmlFor="title">Title</label>
             <input
+              id="form-input"
               ref={inputRef}
               required
               type="text"
@@ -32,6 +33,7 @@ const TheForm: React.FC<Props> = ({ handleSubmit, inputRef }) => {
             />
             <label htmlFor="description">Description</label>
             <textarea
+              id="form-input2"
               maxLength={140}
               required
               name="description"
